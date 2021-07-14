@@ -1,5 +1,6 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import 'package:date_countdown_fschmatz/db/countdownDao.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CountdownCard extends StatefulWidget {
@@ -14,7 +15,6 @@ class CountdownCard extends StatefulWidget {
 }
 
 class _CountdownCardState extends State<CountdownCard> {
-
   Future<void> _delete() async {
     final dbCountDown = CountdownDao.instance;
     final deleted = await dbCountDown.delete(widget.countdown.id);
@@ -116,18 +116,45 @@ class _CountdownCardState extends State<CountdownCard> {
 
   @override
   Widget build(BuildContext context) {
-      return ListTile(
-      tileColor: Theme.of(context).cardTheme.color,
+    return Card(
+      margin: EdgeInsets.fromLTRB(16, 5, 16, 5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      leading: Icon(
-        Icons.calendar_today_outlined,
-        size: 22,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {},
+        child: Column(
+          children: [
+            ListTile(
+              //leading: SizedBox.shrink(),
+              title: Text('Faltam Tantos Dias',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color:
+                          Theme.of(context).accentTextTheme.headline1!.color)),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.calendar_today_outlined,
+                size: 22,
+              ),
+              title:
+                  Text(widget.countdown.date, style: TextStyle(fontSize: 16)),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.notes_outlined,
+                size: 22,
+              ),
+              title:
+                  Text(widget.countdown.note, style: TextStyle(fontSize: 16)),
+            ),
+          ],
+        ),
       ),
-      title: Text(widget.countdown.note,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-      onTap: openBottomMenuScrollable,
     );
   }
 }

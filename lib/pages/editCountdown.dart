@@ -149,7 +149,7 @@ class _EditCountdownState extends State<EditCountdown> {
                     color: Theme.of(context).accentColor)),
           ),
           ListTile(
-            leading: Icon(Icons.text_snippet_outlined),
+            leading: Icon(Icons.notes_outlined),
             title: TextField(
               minLines: 1,
               maxLines: 3,

@@ -23,7 +23,7 @@ class AppInfoPage extends StatelessWidget {
           const SizedBox(height: 20),
           CircleAvatar(
             radius: 55,
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.green,
             child: CircleAvatar(
               radius: 50,
               backgroundImage: AssetImage('assets/avatar.jpg'),
