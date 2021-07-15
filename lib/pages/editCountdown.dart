@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class EditCountdown extends StatefulWidget {
-  Countdown dayNoteEdit;
+  Countdown countdown;
 
-  EditCountdown({Key? key, required this.dayNoteEdit}) : super(key: key);
+  EditCountdown({Key? key, required this.countdown}) : super(key: key);
 
   @override
   _EditCountdownState createState() => _EditCountdownState();
@@ -16,14 +16,16 @@ class EditCountdown extends StatefulWidget {
 class _EditCountdownState extends State<EditCountdown> {
   final dbCountDown = CountdownDao.instance;
   late DateTime dateSelected;
+  late DateTime dateSelectedComplete;
 
   TextEditingController customControllerNote = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    customControllerNote.text = widget.dayNoteEdit.note;
-    dateSelected = DateFormat('dd/MM').parse(widget.dayNoteEdit.date);
+    customControllerNote.text = widget.countdown.note;
+    dateSelectedComplete = DateTime.parse(widget.countdown.completeDate);
+    dateSelected = DateFormat('dd/MM').parse(widget.countdown.date);
   }
 
   getSelectedDateFormatted() {
@@ -32,8 +34,9 @@ class _EditCountdownState extends State<EditCountdown> {
 
   void _updateDayNote() async {
     Map<String, dynamic> row = {
-      CountdownDao.columnId: widget.dayNoteEdit.id,
+      CountdownDao.columnId: widget.countdown.id,
       CountdownDao.columnDate: getSelectedDateFormatted().toString(),
+      CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
       CountdownDao.columnNote: customControllerNote.text,
     };
     final update = await dbCountDown.update(row);
@@ -92,6 +95,7 @@ class _EditCountdownState extends State<EditCountdown> {
     if (data != null) {
       setState(() {
         dateSelected = data;
+        dateSelectedComplete = data;
       });
     }
   }

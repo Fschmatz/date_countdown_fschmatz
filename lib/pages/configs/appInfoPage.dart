@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AppInfoPage extends StatelessWidget {
 
   _launchGithub()  {
-    const url = 'https://github.com/Fschmatz/day_study';
+    const url = 'https://github.com/Fschmatz/date_countdown_fschmatz';
     launch(url);
   }
 
@@ -92,7 +92,7 @@ class AppInfoPage extends StatelessWidget {
                     color: themeColorText)),
           ),
           ListTile(
-            //onTap: () {_launchGithub();},
+            onTap: () {_launchGithub();},
             leading: Icon(Icons.open_in_new_outlined),
             title: Text("View on GitHub",
                 style: TextStyle(
@@ -113,7 +113,7 @@ class AppInfoPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.messenger_outline),
             title: Text(
-              "Develop a passion for learning. If you do, you will never cease to grow.",
+              "By three methods we may learn wisdom: First, by reflection, which is noblest; Second, by imitation, which is easiest; and third by experience, which is the bitterest.",
               style: TextStyle(fontSize: 16),
             ),
           ),

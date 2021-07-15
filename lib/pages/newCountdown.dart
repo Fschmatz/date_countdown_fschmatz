@@ -13,6 +13,7 @@ class _NewCountdownState extends State<NewCountdown> {
 
   final dbCountDown = CountdownDao.instance;
   late DateTime dateSelected;
+  late DateTime dateSelectedComplete;
 
   TextEditingController customControllerNote = TextEditingController();
 
@@ -21,6 +22,7 @@ class _NewCountdownState extends State<NewCountdown> {
   void initState() {
     super.initState();
     dateSelected = DateTime.now();
+    dateSelectedComplete = DateTime.now();
   }
 
   getSelectedDateFormatted() {
@@ -31,8 +33,10 @@ class _NewCountdownState extends State<NewCountdown> {
     Map<String, dynamic> row = {
       CountdownDao.columnNote: customControllerNote.text,
       CountdownDao.columnDate: getSelectedDateFormatted().toString(),
+      CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
     };
     final id = await dbCountDown.insert(row);
+    print(dateSelectedComplete.toString());
     print('id = $id');
   }
 
@@ -89,6 +93,7 @@ class _NewCountdownState extends State<NewCountdown> {
     if (data != null) {
       setState(() {
         dateSelected = data;
+        dateSelectedComplete = data;
       });
     }
   }

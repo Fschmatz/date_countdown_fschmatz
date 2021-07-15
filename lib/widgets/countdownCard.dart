@@ -1,7 +1,9 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import 'package:date_countdown_fschmatz/db/countdownDao.dart';
+import 'package:date_countdown_fschmatz/pages/editCountdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CountdownCard extends StatefulWidget {
   @override
@@ -15,10 +17,19 @@ class CountdownCard extends StatefulWidget {
 }
 
 class _CountdownCardState extends State<CountdownCard> {
+
   Future<void> _delete() async {
     final dbCountDown = CountdownDao.instance;
     final deleted = await dbCountDown.delete(widget.countdown.id);
   }
+
+  getDateCountdown() {
+    DateTime now = DateTime.now();
+    DateTime savedDate = DateTime.parse(widget.countdown.completeDate);
+    Duration timeleft = savedDate.difference(now);
+    return (timeleft.inDays).toString();
+  }
+
 
   showAlertDialogOkDelete(BuildContext context) {
     Widget okButton = TextButton(
@@ -62,60 +73,64 @@ class _CountdownCardState extends State<CountdownCard> {
   }
 
   //BOTTOM MENU
-  openBottomMenuScrollable() {
+  void openBottomMenu() {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20.0),
-            topRight: const Radius.circular(20.0)),
-      ),
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.4,
-          maxChildSize: widget.countdown.note.length > 400 ? 0.7 : 0.55,
-          builder: (BuildContext context, myScrollController) {
-            return Container(
-              child: ListView(
-                  controller: myScrollController,
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
-                        child: Wrap(
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(Icons.calendar_today_outlined),
-                              title: Text(
-                                'opção 1',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0)),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.edit_outlined,
+                        color: Theme.of(context).hintColor),
+                    title: Text(
+                      "Edit countdown",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => EditCountdown(
+                             countdown: widget.countdown,
                             ),
-                            ListTile(
-                              leading: Icon(Icons.text_snippet_outlined),
-                              title: Text(
-                                'opção 2',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ]),
-            );
-          },
-        );
-      },
-    );
+                            fullscreenDialog: true,
+                          )).then((value) => widget.refreshHome());
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(Icons.delete_outline_outlined,
+                        color: Theme.of(context).hintColor),
+                    title: Text(
+                      "Delete countdown",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onTap: () {
+                      showAlertDialogOkDelete(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    String countdown = getDateCountdown();
+
     return Card(
       margin: EdgeInsets.fromLTRB(16, 5, 16, 5),
       shape: RoundedRectangleBorder(
@@ -123,36 +138,38 @@ class _CountdownCardState extends State<CountdownCard> {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: () {},
-        child: Column(
-          children: [
-            ListTile(
-              //leading: SizedBox.shrink(),
-              title: Text('Faltam Tantos Dias',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color:
-                          Theme.of(context).accentTextTheme.headline1!.color)),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.calendar_today_outlined,
-                size: 22,
+        onTap: () {openBottomMenu();},
+        child: Padding(
+          padding: const  EdgeInsets.fromLTRB(0, 5, 0, 5),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text( countdown,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color:
+                            Theme.of(context).accentTextTheme.headline1!.color)),
               ),
-              title:
-                  Text(widget.countdown.date, style: TextStyle(fontSize: 16)),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.notes_outlined,
-                size: 22,
+              ListTile(
+                leading: Icon(
+                  Icons.calendar_today_outlined,
+                 // size: 22,
+                ),
+                title:
+                    Text(widget.countdown.date, style: TextStyle(fontSize: 16)),
               ),
-              title:
-                  Text(widget.countdown.note, style: TextStyle(fontSize: 16)),
-            ),
-          ],
+              ListTile(
+                leading: Icon(
+                  Icons.notes_outlined,
+                 //size: 22,
+                ),
+                title:
+                    Text(widget.countdown.note, style: TextStyle(fontSize: 16)),
+              ),
+            ],
+          ),
         ),
       ),
     );

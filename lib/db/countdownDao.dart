@@ -11,6 +11,7 @@ class CountdownDao {
   static final table = 'note';
   static final columnId = 'id';
   static final columnDate = 'date';
+  static final columnCompleteDate = 'completeDate';
   static final columnNote = 'note';
 
   static Database? _database;
@@ -35,7 +36,8 @@ class CountdownDao {
     await db.execute('''
           CREATE TABLE $table (
            $columnId INTEGER PRIMARY KEY,            
-           $columnDate TEXT NOT NULL,    
+           $columnDate TEXT NOT NULL,  
+           $columnCompleteDate TEXT NOT NULL,
            $columnNote TEXT NOT NULL
           )
           ''');

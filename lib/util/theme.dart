@@ -47,10 +47,10 @@ ThemeData dark = ThemeData(
     accentColor: Color(0xFFD46062),
     scaffoldBackgroundColor: Color(0xFF202022),
     cardTheme: CardTheme(
-      color: Color(0xFF2D2D2F),
+      color: Color(0xFF29292B),
     ),
     dialogTheme: DialogTheme(
-      backgroundColor: Color(0xFF2D2D2F),
+      backgroundColor: Color(0xFF29292B),
     ),
     inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(
@@ -73,7 +73,7 @@ ThemeData dark = ThemeData(
             borderRadius: BorderRadius.circular(15.0))
     ),
     accentTextTheme: TextTheme(
-      headline1: TextStyle(color:  Color(0xFFEF7A7C)),
+      headline1: TextStyle(color:  Color(0xFFff8b87)),
     ),
     bottomAppBarColor: Color(0xFF171719),
     bottomSheetTheme:

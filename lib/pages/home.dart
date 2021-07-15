@@ -22,10 +22,6 @@ class _HomeState extends State<Home> {
     getAll();
   }
 
-  getCurrentDate() {
-    return DateFormat('dd/MM').format(DateTime.now());
-  }
-
   Future<void> getAll() async {
     var resp = await dbCountDown.queryAllRows();
     setState(() {
@@ -43,7 +39,7 @@ class _HomeState extends State<Home> {
         body: ListView(physics: AlwaysScrollableScrollPhysics(), children: [
           ListView.separated(
               physics: NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => const Divider(),
+              separatorBuilder: (context, index) => const SizedBox(height: 15,),
               shrinkWrap: true,
               itemCount: countdownList.length,
               itemBuilder: (context, index) {
@@ -52,7 +48,8 @@ class _HomeState extends State<Home> {
                     countdown: Countdown(
                         countdownList[index]['id'],
                         countdownList[index]['date'],
-                        countdownList[index]['note']
+                        countdownList[index]['note'],
+                        countdownList[index]['completeDate'],
                     ),
                     refreshHome: getAll);
               }),
@@ -71,7 +68,7 @@ class _HomeState extends State<Home> {
                     MaterialPageRoute<void>(
                       builder: (BuildContext context) => NewCountdown(),
                       fullscreenDialog: true,
-                    ));
+                    )).then((value) => getAll());
               },
               child: Icon(
                 Icons.add,
