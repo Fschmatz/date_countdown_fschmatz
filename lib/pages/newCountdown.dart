@@ -158,7 +158,7 @@ class _NewCountdownState extends State<NewCountdown> {
                 title: TextField(
                   minLines: 1,
                   maxLines: 3,
-                  maxLength: 500,
+                  maxLength: 200,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   controller: customControllerNote,
                   decoration: InputDecoration(
