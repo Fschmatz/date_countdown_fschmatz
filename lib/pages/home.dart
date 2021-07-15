@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
                     refreshHome: getAll);
               }),
           const SizedBox(
-            height: 20,
+            height: 50,
           )
         ]),
         floatingActionButton: Container(

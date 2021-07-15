@@ -36,9 +36,9 @@ ThemeData light = ThemeData(
     accentTextTheme: TextTheme(
       headline1: TextStyle(color: Colors.red),
     ),
-    bottomAppBarColor: Color(0xFFE6E6E6),
+    bottomAppBarColor: Color(0xFFE2E2E2),
     bottomSheetTheme:
-        BottomSheetThemeData(modalBackgroundColor: Color(0xFFF5F5F5)));
+        BottomSheetThemeData(modalBackgroundColor: Color(0xFFFFFFFF)));
 
 //ESCURO
 ThemeData dark = ThemeData(
@@ -75,7 +75,7 @@ ThemeData dark = ThemeData(
     accentTextTheme: TextTheme(
       headline1: TextStyle(color:  Color(0xFFff8b87)),
     ),
-    bottomAppBarColor: Color(0xFF171719),
+    bottomAppBarColor: Color(0xFF151517),
     bottomSheetTheme:
         BottomSheetThemeData(modalBackgroundColor: Color(0xFF202022)));
 

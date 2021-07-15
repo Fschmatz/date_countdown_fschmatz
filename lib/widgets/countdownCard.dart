@@ -3,7 +3,6 @@ import 'package:date_countdown_fschmatz/db/countdownDao.dart';
 import 'package:date_countdown_fschmatz/pages/editCountdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CountdownCard extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class CountdownCard extends StatefulWidget {
 }
 
 class _CountdownCardState extends State<CountdownCard> {
-
   Future<void> _delete() async {
     final dbCountDown = CountdownDao.instance;
     final deleted = await dbCountDown.delete(widget.countdown.id);
@@ -27,9 +25,16 @@ class _CountdownCardState extends State<CountdownCard> {
     DateTime now = DateTime.now();
     DateTime savedDate = DateTime.parse(widget.countdown.completeDate);
     Duration timeleft = savedDate.difference(now);
-    return (timeleft.inDays).toString();
+    if (now.day.compareTo(savedDate.day).isEven) {
+      return 'Today';
+    } else {
+      if (((timeleft.inDays) + 1) == 1) {
+        return '1 Day';
+      } else {
+        return ((timeleft.inDays) + 1).toString() + ' Days';
+      }
+    }
   }
-
 
   showAlertDialogOkDelete(BuildContext context) {
     Widget okButton = TextButton(
@@ -101,7 +106,7 @@ class _CountdownCardState extends State<CountdownCard> {
                           context,
                           MaterialPageRoute<void>(
                             builder: (BuildContext context) => EditCountdown(
-                             countdown: widget.countdown,
+                              countdown: widget.countdown,
                             ),
                             fullscreenDialog: true,
                           )).then((value) => widget.refreshHome());
@@ -128,7 +133,6 @@ class _CountdownCardState extends State<CountdownCard> {
 
   @override
   Widget build(BuildContext context) {
-
     String countdown = getDateCountdown();
 
     return Card(
@@ -138,24 +142,27 @@ class _CountdownCardState extends State<CountdownCard> {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: () {openBottomMenu();},
+        onTap: () {
+          openBottomMenu();
+        },
         child: Padding(
-          padding: const  EdgeInsets.fromLTRB(0, 5, 0, 5),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
           child: Column(
             children: [
               ListTile(
-                title: Text( countdown,
+                title: Text(countdown,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color:
-                            Theme.of(context).accentTextTheme.headline1!.color)),
+                        fontSize: 20,
+                        color: Theme.of(context)
+                            .accentTextTheme
+                            .headline1!
+                            .color)),
               ),
               ListTile(
                 leading: Icon(
                   Icons.calendar_today_outlined,
-                 // size: 22,
                 ),
                 title:
                     Text(widget.countdown.date, style: TextStyle(fontSize: 16)),
@@ -163,7 +170,6 @@ class _CountdownCardState extends State<CountdownCard> {
               ListTile(
                 leading: Icon(
                   Icons.notes_outlined,
-                 //size: 22,
                 ),
                 title:
                     Text(widget.countdown.note, style: TextStyle(fontSize: 16)),
