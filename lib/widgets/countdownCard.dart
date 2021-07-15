@@ -29,9 +29,9 @@ class _CountdownCardState extends State<CountdownCard> {
       return 'Today';
     } else {
       if (((timeleft.inDays) + 1) == 1) {
-        return '1 Day';
+        return '1\nDay';
       } else {
-        return ((timeleft.inDays) + 1).toString() + ' Days';
+        return ((timeleft.inDays) + 1).toString() + '\nDays';
       }
     }
   }
@@ -145,33 +145,42 @@ class _CountdownCardState extends State<CountdownCard> {
         onTap: () {
           openBottomMenu();
         },
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ListTile(
-              contentPadding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-              title: Text(countdown,
+            Flexible(
+              flex: 1,
+              child: Text(countdown,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                      color: Theme.of(context)
-                          .accentTextTheme
-                          .headline1!
-                          .color)),
+                      fontSize: 24,
+                      color:
+                          Theme.of(context).accentTextTheme.headline1!.color)),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.notes_outlined,
+            Container(height: 80, child: VerticalDivider()),
+            Flexible(
+              flex: 2,
+              child: Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    leading: Icon(
+                      Icons.notes_outlined,
+                    ),
+                    title: Text(widget.countdown.note,
+                        style: TextStyle(fontSize: 16)),
+                  ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    leading: Icon(
+                      Icons.calendar_today_outlined,
+                    ),
+                    title: Text(widget.countdown.date,
+                        style: TextStyle(fontSize: 16)),
+                  ),
+                ],
               ),
-              title:
-                  Text(widget.countdown.note, style: TextStyle(fontSize: 16)),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.calendar_today_outlined,
-              ),
-              title:
-              Text(widget.countdown.date, style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
