@@ -150,13 +150,16 @@ class _CountdownCardState extends State<CountdownCard> {
           children: [
             Flexible(
               flex: 1,
-              child: Text(countdown,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 24,
-                      color:
-                          Theme.of(context).accentTextTheme.headline1!.color)),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(countdown,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                        color:
+                            Theme.of(context).accentTextTheme.headline1!.color)),
+              ),
             ),
             Container(height: 80, child: VerticalDivider()),
             Flexible(
