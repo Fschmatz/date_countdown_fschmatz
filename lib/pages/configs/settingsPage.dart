@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: Text(
                     Changelog.appName + " " + Changelog.appVersion,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 17.5, color: Colors.black),
+                    style: TextStyle(fontSize: 17.5),
                   ),
                 ),
               ),

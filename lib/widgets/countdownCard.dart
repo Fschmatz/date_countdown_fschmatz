@@ -27,12 +27,14 @@ class _CountdownCardState extends State<CountdownCard> {
     Duration timeleft = savedDate.difference(now);
     if (now.day.compareTo(savedDate.day).isEven) {
       return 'Today';
+    } else if (((timeleft.inDays) + 1) == 1) {
+      return '1\nDay    ';
+    } else if (timeleft.inDays < 0) {
+      return ((timeleft.inDays).abs() == 1
+          ? (timeleft.inDays).abs().toString() + '\nDay     \nAgo'
+          : (timeleft.inDays).abs().toString() + '\nDays   \nAgo');
     } else {
-      if (((timeleft.inDays) + 1) == 1) {
-        return '1\nDay';
-      } else {
-        return ((timeleft.inDays) + 1).toString() + '\nDays';
-      }
+      return ((timeleft.inDays) + 1).toString() + '\nDays  ';
     }
   }
 
@@ -152,16 +154,33 @@ class _CountdownCardState extends State<CountdownCard> {
               flex: 1,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text(countdown,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                        color:
-                            Theme.of(context).accentTextTheme.headline1!.color)),
+                child: countdown.contains('Ago')
+                    ? Text(countdown,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22,
+                          color: Theme.of(context)
+                              .textTheme
+                              .headline1!
+                              .color!
+                              .withOpacity(0.6)))
+                    : Text(countdown,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            color: Theme.of(context)
+                                .accentTextTheme
+                                .headline1!
+                                .color)),
               ),
             ),
-            Container(height: 80, child: VerticalDivider()),
+            Container(
+                height: 80,
+                child: VerticalDivider(
+                  thickness: 1,
+                )),
             Flexible(
               flex: 2,
               child: Column(
