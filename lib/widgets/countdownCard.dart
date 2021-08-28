@@ -25,7 +25,8 @@ class _CountdownCardState extends State<CountdownCard> {
     DateTime now = DateTime.now();
     DateTime savedDate = DateTime.parse(widget.countdown.completeDate);
     Duration timeleft = savedDate.difference(now);
-    if (now.day.compareTo(savedDate.day).isEven) {
+
+    if (now.day.compareTo(savedDate.day).isEven && now.month.compareTo(savedDate.month).isEven) {
       return 'Today';
     } else if (((timeleft.inDays) + 1) == 1) {
       return '1\nDay    ';
@@ -138,6 +139,7 @@ class _CountdownCardState extends State<CountdownCard> {
     String countdown = getDateCountdown();
 
     return Card(
+      elevation: 0,
       margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
