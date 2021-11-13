@@ -27,18 +27,16 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Settings"),
-          elevation: 0,
         ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Card(
-                elevation: 1,
                 margin: const EdgeInsets.fromLTRB(16, 20, 16, 25),
                 color: Theme.of(context).accentColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                 ),
                 child: ListTile(
                   title: Text(

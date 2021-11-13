@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> getAll() async {
-    var resp = await dbCountDown.queryAllRows();
+    var resp = await dbCountDown.queryAllRowsDesc();
     setState(() {
       countdownList = resp;
     });
@@ -34,14 +34,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Date Countdown'),
-        elevation: 0,
         actions: [
           IconButton(
-              color: Theme.of(context)
-                  .textTheme
-                  .headline6!
-                  .color!
-                  .withOpacity(0.8),
               icon: Icon(
                 Icons.settings_outlined,
               ),
@@ -78,24 +72,21 @@ class _HomeState extends State<Home> {
           height: 100,
         )
       ]),
-      floatingActionButton: Container(
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Theme.of(context).accentColor,
-            elevation: 0.0,
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => NewCountdown(),
-                    fullscreenDialog: true,
-                  )).then((value) => getAll());
-            },
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
+      floatingActionButton: FloatingActionButton(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => NewCountdown(),
+                fullscreenDialog: true,
+              )).then((value) => getAll());
+        },
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).accentColor
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

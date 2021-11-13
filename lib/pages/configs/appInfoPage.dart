@@ -17,7 +17,6 @@ class AppInfoPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("App Info"),
-          elevation: 0,
         ),
         body: ListView(children: <Widget>[
           const SizedBox(height: 20),
@@ -51,17 +50,6 @@ class AppInfoPage extends StatelessWidget {
           ),
           ListTile(
             leading: Icon( Icons.info_outline),
-            title: Text(
-              "HAMMERED AND REDONE: 0 Times !!!",
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
             title: Text(
               "Application created using Flutter and the Dart language, used for testing and learning.",
               style: TextStyle(

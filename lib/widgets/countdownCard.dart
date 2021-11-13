@@ -91,43 +91,45 @@ class _CountdownCardState extends State<CountdownCard> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext bc) {
-          return Container(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Wrap(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.edit_outlined,
-                        color: Theme.of(context).hintColor),
-                    title: Text(
-                      "Edit countdown",
-                      style: TextStyle(fontSize: 16),
+          return SafeArea(
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Wrap(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.edit_outlined,
+                          color: Theme.of(context).hintColor),
+                      title: Text(
+                        "Edit countdown",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) => EditCountdown(
+                                countdown: widget.countdown,
+                              ),
+                              fullscreenDialog: true,
+                            )).then((value) => widget.refreshHome());
+                      },
                     ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => EditCountdown(
-                              countdown: widget.countdown,
-                            ),
-                            fullscreenDialog: true,
-                          )).then((value) => widget.refreshHome());
-                    },
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: Icon(Icons.delete_outline_outlined,
-                        color: Theme.of(context).hintColor),
-                    title: Text(
-                      "Delete countdown",
-                      style: TextStyle(fontSize: 16),
+                    const Divider(),
+                    ListTile(
+                      leading: Icon(Icons.delete_outline_outlined,
+                          color: Theme.of(context).hintColor),
+                      title: Text(
+                        "Delete countdown",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      onTap: () {
+                        showAlertDialogOkDelete(context);
+                      },
                     ),
-                    onTap: () {
-                      showAlertDialogOkDelete(context);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -139,13 +141,12 @@ class _CountdownCardState extends State<CountdownCard> {
     String countdown = getDateCountdown();
 
     return Card(
-      elevation: 0,
       margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         onTap: () {
           openBottomMenu();
         },
