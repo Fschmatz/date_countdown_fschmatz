@@ -24,7 +24,7 @@ ThemeData light = ThemeData(
       backgroundColor: Color(0xFFF9F9F9),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFE5E0E0),
+      backgroundColor: Color(0xFFE9E7E7),
     ),
     inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(
@@ -48,6 +48,7 @@ ThemeData light = ThemeData(
     ),
     accentTextTheme: TextTheme(
       headline1: TextStyle(color: Colors.redAccent),
+      headline2: TextStyle(color:  Colors.redAccent),
     ),
     bottomAppBarColor: Color(0xFFC0C0C0),
     bottomSheetTheme:
@@ -74,7 +75,7 @@ ThemeData dark = ThemeData(
       color: Color(0xFF2B2B2D),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFF404043),
+      backgroundColor: Color(0xFFD46062),
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Color(0xFF29292B),
@@ -101,6 +102,7 @@ ThemeData dark = ThemeData(
     ),
     accentTextTheme: TextTheme(
       headline1: TextStyle(color:  Color(0xFFff8b87)),
+      headline2: TextStyle(color:  Color(0xFF2B2B2D)),
     ),
     bottomAppBarColor: Color(0xFF1B1B1D),
     bottomSheetTheme:

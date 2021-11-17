@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
         ListView.separated(
             physics: NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) => const SizedBox(
-                  height: 15,
+                  height: 12,
                 ),
             shrinkWrap: true,
             itemCount: countdownList.length,
@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
         },
         child: Icon(
           Icons.add,
-          color: Theme.of(context).accentColor
+          color: Theme.of(context).accentTextTheme.headline2!.color
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
