@@ -4,11 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 //CLARO
 ThemeData light = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Color(0xFFF0F0F0),
+    primaryColorBrightness: Brightness.dark,
+    primaryColor: Color(0xFFFFFEFE),
     accentColor: Colors.red,
-    scaffoldBackgroundColor: Color(0xFFF0F0F0),
+    scaffoldBackgroundColor: Color(0xFFFFFEFE),
     appBarTheme: const AppBarTheme(
-        color: Color(0xFFF0F0F0),
+        color: Color(0xFFFFFEFE),
         elevation: 0,
         iconTheme: IconThemeData(
             color: Color(0xFF151515)
@@ -18,13 +19,13 @@ ThemeData light = ThemeData(
             fontWeight: FontWeight.w600,
             color: Color(0xFF000000))),
     cardTheme: CardTheme(
-      color: Color(0xFFFFFFFF),
+      color: Color(0xFFF1F0F0),
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Color(0xFFF9F9F9),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFE9E7E7),
+      backgroundColor: Colors.redAccent.shade200
     ),
     inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(
@@ -50,13 +51,14 @@ ThemeData light = ThemeData(
       headline1: TextStyle(color: Colors.redAccent),
       headline2: TextStyle(color:  Colors.redAccent),
     ),
-    bottomAppBarColor: Color(0xFFC0C0C0),
+    bottomAppBarColor: Color(0xFFFFFEFE),
     bottomSheetTheme:
-        BottomSheetThemeData(modalBackgroundColor: Color(0xFFF0F0F0)));
+        BottomSheetThemeData(modalBackgroundColor: Color(0xFFFFFEFE)));
 
 //ESCURO
 ThemeData dark = ThemeData(
     brightness: Brightness.dark,
+    primaryColorBrightness: Brightness.light,
     primaryColor: Color(0xFF1B1B1D),
     accentColor: Color(0xFFD46062),
     scaffoldBackgroundColor: Color(0xFF1B1B1D),
@@ -75,7 +77,7 @@ ThemeData dark = ThemeData(
       color: Color(0xFF2B2B2D),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFD46062),
+      backgroundColor: Color(0xFFe3787a),
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Color(0xFF29292B),

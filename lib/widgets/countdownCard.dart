@@ -58,6 +58,9 @@ class _CountdownCardState extends State<CountdownCard> {
 
     AlertDialog alert = AlertDialog(
       elevation: 3.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
       title: Text(
         "Confirm", //
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),

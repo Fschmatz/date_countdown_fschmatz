@@ -25,11 +25,11 @@ class _EditCountdownState extends State<EditCountdown> {
     super.initState();
     customControllerNote.text = widget.countdown.note;
     dateSelectedComplete = DateTime.parse(widget.countdown.completeDate);
-    dateSelected = DateFormat('dd/MM').parse(widget.countdown.date);
+    dateSelected = DateFormat('dd/MM/yyyy').parse(widget.countdown.date);
   }
 
   getSelectedDateFormatted() {
-    return DateFormat('dd/MM').format(dateSelected);
+    return DateFormat('dd/MM/yyyy').format(dateSelected);
   }
 
   void _updateDayNote() async {

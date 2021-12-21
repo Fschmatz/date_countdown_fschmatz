@@ -26,7 +26,7 @@ class _NewCountdownState extends State<NewCountdown> {
   }
 
   getSelectedDateFormatted() {
-    return DateFormat('dd/MM').format(dateSelected);
+    return DateFormat('dd/MM/yyyy').format(dateSelected);
   }
 
   void _saveNote() async {

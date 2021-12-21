@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
         },
         child: Icon(
           Icons.add,
-          color: Theme.of(context).accentTextTheme.headline2!.color
+          color: Colors.black87
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
