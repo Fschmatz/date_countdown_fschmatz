@@ -101,8 +101,7 @@ class _CountdownCardState extends State<CountdownCard> {
                 child: Wrap(
                   children: <Widget>[
                     ListTile(
-                      leading: Icon(Icons.edit_outlined,
-                          color: Theme.of(context).hintColor),
+                      leading: Icon(Icons.edit_outlined),
                       title: Text(
                         "Edit countdown",
                         style: TextStyle(fontSize: 16),
@@ -121,8 +120,7 @@ class _CountdownCardState extends State<CountdownCard> {
                     ),
                     const Divider(),
                     ListTile(
-                      leading: Icon(Icons.delete_outline_outlined,
-                          color: Theme.of(context).hintColor),
+                      leading: Icon(Icons.delete_outline_outlined),
                       title: Text(
                         "Delete countdown",
                         style: TextStyle(fontSize: 16),

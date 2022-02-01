@@ -130,23 +130,6 @@ class _NewCountdownState extends State<NewCountdown> {
                 leading: SizedBox(
                   height: 0.1,
                 ),
-                title: Text("Choose Date".toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).accentColor)),
-              ),
-              ListTile(
-                onTap: () {
-                  chooseDate();
-                },
-                leading: Icon(Icons.calendar_today_outlined),
-                title: Text(getSelectedDateFormatted().toString()),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  height: 0.1,
-                ),
                 title: Text("Note".toUpperCase(),
                     style: TextStyle(
                         fontSize: 13,
@@ -159,6 +142,8 @@ class _NewCountdownState extends State<NewCountdown> {
                   minLines: 1,
                   maxLines: 3,
                   maxLength: 200,
+                  autofocus: true,
+                  textCapitalization: TextCapitalization.sentences,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   controller: customControllerNote,
                   decoration: InputDecoration(
@@ -169,6 +154,23 @@ class _NewCountdownState extends State<NewCountdown> {
                     fontSize: 17,
                   ),
                 ),
+              ),
+              ListTile(
+                leading: SizedBox(
+                  height: 0.1,
+                ),
+                title: Text("Choose Date".toUpperCase(),
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).accentColor)),
+              ),
+              ListTile(
+                onTap: () {
+                  chooseDate();
+                },
+                leading: Icon(Icons.calendar_today_outlined),
+                title: Text(getSelectedDateFormatted().toString()),
               ),
             ]
         )

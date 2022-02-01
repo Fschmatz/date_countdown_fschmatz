@@ -129,23 +129,6 @@ class _EditCountdownState extends State<EditCountdown> {
             leading: SizedBox(
               height: 0.1,
             ),
-            title: Text("Choose Date".toUpperCase(),
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).accentColor)),
-          ),
-          ListTile(
-            onTap: () {
-              chooseDate();
-            },
-            leading: Icon(Icons.calendar_today_outlined),
-            title: Text(getSelectedDateFormatted().toString()),
-          ),
-          ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
             title: Text("Note".toUpperCase(),
                 style: TextStyle(
                     fontSize: 13,
@@ -160,6 +143,7 @@ class _EditCountdownState extends State<EditCountdown> {
               maxLength: 200,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: customControllerNote,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 focusColor: Theme.of(context).accentColor,
                 helperText: "* Required",
@@ -168,6 +152,23 @@ class _EditCountdownState extends State<EditCountdown> {
                 fontSize: 17,
               ),
             ),
+          ),
+          ListTile(
+            leading: SizedBox(
+              height: 0.1,
+            ),
+            title: Text("Choose Date".toUpperCase(),
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).accentColor)),
+          ),
+          ListTile(
+            onTap: () {
+              chooseDate();
+            },
+            leading: Icon(Icons.calendar_today_outlined),
+            title: Text(getSelectedDateFormatted().toString()),
           ),
         ]));
   }

@@ -5,11 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 ThemeData light = ThemeData(
     brightness: Brightness.light,
     primaryColorBrightness: Brightness.dark,
-    primaryColor: Color(0xFFFFFEFE),
+    primaryColor: Color(0xFFF1F0F0),
     accentColor: Colors.red,
-    scaffoldBackgroundColor: Color(0xFFFFFEFE),
+    scaffoldBackgroundColor: Color(0xFFF1F0F0),
     appBarTheme: const AppBarTheme(
-        color: Color(0xFFFFFEFE),
+        color: Color(0xFFF1F0F0),
         elevation: 0,
         iconTheme: IconThemeData(
             color: Color(0xFF151515)
@@ -19,10 +19,10 @@ ThemeData light = ThemeData(
             fontWeight: FontWeight.w600,
             color: Color(0xFF000000))),
     cardTheme: CardTheme(
-      color: Color(0xFFF1F0F0),
+      color: Color(0xFFFFFEFE),//0xFFF1F0F0
     ),
     dialogTheme: DialogTheme(
-      backgroundColor: Color(0xFFF9F9F9),
+      backgroundColor: Color(0xFFFFFEFE),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.redAccent.shade200
@@ -51,7 +51,7 @@ ThemeData light = ThemeData(
       headline1: TextStyle(color: Colors.redAccent),
       headline2: TextStyle(color:  Colors.redAccent),
     ),
-    bottomAppBarColor: Color(0xFFFFFEFE),
+    bottomAppBarColor: Color(0xFFF1F0F0),
     bottomSheetTheme:
         BottomSheetThemeData(modalBackgroundColor: Color(0xFFFFFEFE)));
 
@@ -66,7 +66,7 @@ ThemeData dark = ThemeData(
         color: Color(0xFF1B1B1D),
         elevation: 0,
         iconTheme: IconThemeData(
-            color: Color(0xFFF0F0F0)
+            color: Color(0xFFF5F5F5)
         ),
         titleTextStyle: TextStyle(
             fontSize: 20,
@@ -74,13 +74,13 @@ ThemeData dark = ThemeData(
             color: Color(0xFFFFFFFF))),
     cardTheme: CardTheme(
       elevation: 0,
-      color: Color(0xFF2B2B2D),
+      color: Color(0xFF2B2B2F),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Color(0xFFe3787a),
     ),
     dialogTheme: DialogTheme(
-      backgroundColor: Color(0xFF29292B),
+      backgroundColor: Color(0xFF2B2B2F),
     ),
     inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(

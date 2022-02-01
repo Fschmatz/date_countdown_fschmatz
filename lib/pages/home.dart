@@ -32,46 +32,60 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Date Countdown'),
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.settings_outlined,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => SettingsPage(),
-                      fullscreenDialog: true,
-                    ));
-              }),
-        ],
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: Text('Date Countdown'),
+              pinned: false,
+              floating: true,
+              snap: true,
+              actions: [
+                IconButton(
+                    icon: Icon(
+                      Icons.settings_outlined,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => SettingsPage(),
+                            fullscreenDialog: true,
+                          ));
+                    }),
+              ],
+            ),
+
+          ];
+        },
+        body: RefreshIndicator(
+          onRefresh: getAll,
+          color: Theme.of(context).accentColor,
+          child: ListView(physics: AlwaysScrollableScrollPhysics(), children: [
+            ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => const SizedBox(
+                      height: 12,
+                    ),
+                shrinkWrap: true,
+                itemCount: countdownList.length,
+                itemBuilder: (context, index) {
+                  return CountdownCard(
+                      key: UniqueKey(),
+                      countdown: Countdown(
+                        countdownList[index]['id'],
+                        countdownList[index]['date'],
+                        countdownList[index]['note'],
+                        countdownList[index]['completeDate'],
+                      ),
+                      refreshHome: getAll);
+                }),
+            const SizedBox(
+              height: 100,
+            )
+          ]),
+        ),
       ),
-      body: ListView(physics: AlwaysScrollableScrollPhysics(), children: [
-        ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 12,
-                ),
-            shrinkWrap: true,
-            itemCount: countdownList.length,
-            itemBuilder: (context, index) {
-              return CountdownCard(
-                  key: UniqueKey(),
-                  countdown: Countdown(
-                    countdownList[index]['id'],
-                    countdownList[index]['date'],
-                    countdownList[index]['note'],
-                    countdownList[index]['completeDate'],
-                  ),
-                  refreshHome: getAll);
-            }),
-        const SizedBox(
-          height: 100,
-        )
-      ]),
       floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
