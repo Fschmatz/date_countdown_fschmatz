@@ -1,16 +1,20 @@
 class Changelog{
 
-  static String appVersion = "1.3.2";
+  static String appVersion = "1.4.0";
   static String appName = "Date Countdown Fschmatz";
 
   static String changelogCurrent = '''
+1.4.0
+- Bug Fix
+- Added System Theme
+''';
+
+  static String changelogsOld = ''' 
 1.3.2
 - UI Changes
 - Bug Fix
 - Pull down to refresh
-''';
 
-  static String changelogsOld = ''' 
 1.2.1
 - Home Changes
 - Removed BottomBar
