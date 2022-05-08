@@ -1,12 +1,10 @@
-import 'package:date_countdown_fschmatz/util/changelog.dart';
+import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:flutter/material.dart';
 
 class ChangelogPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
-    Color? themeColorText = Theme.of(context).accentTextTheme.headline1!.color;
+    Color? themeColorText = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
         appBar: AppBar(
@@ -14,32 +12,24 @@ class ChangelogPage extends StatelessWidget {
         ),
         body: ListView(children: <Widget>[
           ListTile(
-              leading: SizedBox(
-                height: 0.1,
-              ),
-              title: Text("Current Version".toUpperCase(),
+              title: Text("Current Version",
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                       color: themeColorText))),
           ListTile(
             leading: Icon(
               Icons.article_outlined,
             ),
             title: Text(
-              Changelog.changelogCurrent,
-              style: TextStyle(fontSize: 16),
+              AppDetails.changelogCurrent,
             ),
           ),
-          Divider(),
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Previous Versions".toUpperCase(),
+            title: Text("Previous Versions",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                     color: themeColorText)),
           ),
           ListTile(
@@ -47,8 +37,7 @@ class ChangelogPage extends StatelessWidget {
               Icons.article_outlined,
             ),
             title: Text(
-              Changelog.changelogsOld,
-              style: TextStyle(fontSize: 16),
+              AppDetails.changelogsOld,
             ),
           ),
         ]));

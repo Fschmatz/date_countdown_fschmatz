@@ -1,4 +1,4 @@
-import 'package:date_countdown_fschmatz/util/changelog.dart';
+import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:date_countdown_fschmatz/util/theme.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
   String getThemeStringFormatted() {
     String theme = EasyDynamicTheme.of(context)
         .themeMode
@@ -30,8 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    Color? themeColorText = Theme.of(context).accentTextTheme.headline1!.color;
+    Color? themeColorText = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
         appBar: AppBar(
@@ -41,29 +39,24 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Card(
               margin: const EdgeInsets.fromLTRB(16, 20, 16, 25),
-              color: Theme.of(context).accentColor,
+              color: themeColorText,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: ListTile(
                 title: Text(
-                  Changelog.appName + " " + Changelog.appVersion,
+                  AppDetails.appName + " " + AppDetails.appVersion,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 17.5),
                 ),
               ),
             ),
-
-            const Divider(),
             ListTile(
-              leading: SizedBox(height: 0.1,),
-              title:    Text(
-                  "General".toUpperCase(),
+              title: Text("General",
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: themeColorText)
-              ),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: themeColorText)),
             ),
             ListTile(
               onTap: () => showDialog(
@@ -74,22 +67,17 @@ class _SettingsPageState extends State<SettingsPage> {
               leading: const Icon(Icons.brightness_6_outlined),
               title: const Text(
                 "App Theme",
-                style: TextStyle(fontSize: 16),
               ),
               subtitle: Text(
                 getThemeStringFormatted(),
               ),
             ),
-            const Divider(),
             ListTile(
-              leading: SizedBox(height: 0.1,),
-              title:    Text(
-                  "About".toUpperCase(),
+              title: Text("About",
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: themeColorText)
-              ),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: themeColorText)),
             ),
             ListTile(
               leading: Icon(
@@ -97,19 +85,14 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: Text(
                 "App Info",
-                style: TextStyle(fontSize: 16),
               ),
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute<void>(
+                    MaterialPageRoute(
                       builder: (BuildContext context) => AppInfoPage(),
-                      fullscreenDialog: true,
                     ));
               },
-            ),
-            const SizedBox(
-              height: 10.0,
             ),
             ListTile(
               leading: Icon(
@@ -117,14 +100,12 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               title: Text(
                 "Changelog",
-                style: TextStyle(fontSize: 16),
               ),
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute<void>(
+                    MaterialPageRoute(
                       builder: (BuildContext context) => ChangelogPage(),
-                      fullscreenDialog: true,
                     ));
               },
             ),

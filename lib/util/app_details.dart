@@ -1,10 +1,12 @@
-class Changelog{
+class AppDetails{
 
-  static String appVersion = "1.4.0";
+  static String appVersion = "1.4.1";
   static String appName = "Date Countdown Fschmatz";
+  static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
 
   static String changelogCurrent = '''
-1.4.0
+1.4.1
+- UI Changes
 - Bug Fix
 - Added System Theme
 ''';

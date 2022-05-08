@@ -4,19 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class NewCountdown extends StatefulWidget {
-
   @override
   _NewCountdownState createState() => _NewCountdownState();
 }
 
 class _NewCountdownState extends State<NewCountdown> {
-
   final dbCountDown = CountdownDao.instance;
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
 
   TextEditingController customControllerNote = TextEditingController();
-
 
   @override
   void initState() {
@@ -52,7 +49,6 @@ class _NewCountdownState extends State<NewCountdown> {
     Widget okButton = TextButton(
       child: Text(
         "Ok",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
         Navigator.of(context).pop();
@@ -60,16 +56,11 @@ class _NewCountdownState extends State<NewCountdown> {
     );
 
     AlertDialog alert = AlertDialog(
-      elevation: 3.0,
       title: Text(
         "Error",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: Text(
         checkProblems(),
-        style: TextStyle(
-          fontSize: 18,
-        ),
       ),
       actions: [
         okButton,
@@ -98,83 +89,64 @@ class _NewCountdownState extends State<NewCountdown> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("New Countdown"),
-          elevation: 0,
           actions: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-              child: IconButton(
-                icon: Icon(Icons.save_outlined),
-                tooltip: 'Save',
-                onPressed: () {
-                  if (checkProblems().isEmpty) {
-                    _saveNote();
-                    Navigator.of(context).pop();
-                  } else {
-                    showAlertDialogErrors(context);
-                  }
-                },
-              ),
+            IconButton(
+              icon: Icon(Icons.save_outlined),
+              tooltip: 'Save',
+              onPressed: () {
+                if (checkProblems().isEmpty) {
+                  _saveNote();
+                  Navigator.of(context).pop();
+                } else {
+                  showAlertDialogErrors(context);
+                }
+              },
             ),
           ],
         ),
-        body: ListView(
-            children: [
-              ListTile(
-                leading: SizedBox(
-                  height: 0.1,
-                ),
-                title: Text("Note".toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).accentColor)),
+        body: ListView(children: [
+          ListTile(
+            title: Text("Note",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary)),
+          ),
+          ListTile(
+            title: TextField(
+              minLines: 1,
+              maxLines: 3,
+              maxLength: 200,
+              autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: customControllerNote,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.notes_outlined),
+                focusColor: Theme.of(context).colorScheme.primary,
+                helperText: "* Required",
               ),
-              ListTile(
-                leading: Icon(Icons.notes_outlined),
-                title: TextField(
-                  minLines: 1,
-                  maxLines: 3,
-                  maxLength: 200,
-                  autofocus: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  controller: customControllerNote,
-                  decoration: InputDecoration(
-                    focusColor: Theme.of(context).accentColor,
-                    helperText: "* Required",
-                  ),
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: SizedBox(
-                  height: 0.1,
-                ),
-                title: Text("Choose Date".toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).accentColor)),
-              ),
-              ListTile(
-                onTap: () {
-                  chooseDate();
-                },
-                leading: Icon(Icons.calendar_today_outlined),
-                title: Text(getSelectedDateFormatted().toString()),
-              ),
-            ]
-        )
-    );
-
+            ),
+          ),
+          ListTile(
+            title: Text("Choose Date",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary)),
+          ),
+          ListTile(
+            onTap: () {
+              chooseDate();
+            },
+            leading: Icon(Icons.calendar_today_outlined),
+            title: Text(getSelectedDateFormatted().toString()),
+          ),
+        ]));
   }
 }

@@ -5,7 +5,6 @@ import 'package:date_countdown_fschmatz/pages/newCountdown.dart';
 import 'package:date_countdown_fschmatz/widgets/countdownCard.dart';
 import 'package:flutter/material.dart';
 import 'configs/settingsPage.dart';
-import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,8 +17,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    super.initState();
     getAll();
+    super.initState();
   }
 
   Future<void> getAll() async {
@@ -48,19 +47,17 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute<void>(
+                          MaterialPageRoute(
                             builder: (BuildContext context) => SettingsPage(),
-                            fullscreenDialog: true,
                           ));
                     }),
               ],
             ),
-
           ];
         },
         body: RefreshIndicator(
           onRefresh: getAll,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.primary,
           child: ListView(physics: AlwaysScrollableScrollPhysics(), children: [
             ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
@@ -93,17 +90,12 @@ class _HomeState extends State<Home> {
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute<void>(
+              MaterialPageRoute(
                 builder: (BuildContext context) => NewCountdown(),
-                fullscreenDialog: true,
               )).then((value) => getAll());
         },
-        child: Icon(
-          Icons.add,
-          color: Colors.black87
-        ),
+        child: Icon(Icons.add_outlined, color: Colors.black87),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

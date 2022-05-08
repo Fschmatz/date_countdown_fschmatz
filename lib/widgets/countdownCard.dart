@@ -26,7 +26,8 @@ class _CountdownCardState extends State<CountdownCard> {
     DateTime savedDate = DateTime.parse(widget.countdown.completeDate);
     Duration timeleft = savedDate.difference(now);
 
-    if (now.day.compareTo(savedDate.day).isEven && now.month.compareTo(savedDate.month).isEven) {
+    if (now.day.compareTo(savedDate.day).isEven &&
+        now.month.compareTo(savedDate.month).isEven) {
       return 'Today';
     } else if (((timeleft.inDays) + 1) == 1) {
       return '1\nDay    ';
@@ -43,10 +44,6 @@ class _CountdownCardState extends State<CountdownCard> {
     Widget okButton = TextButton(
       child: Text(
         "Yes",
-        style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).accentColor),
       ),
       onPressed: () {
         _delete();
@@ -57,19 +54,11 @@ class _CountdownCardState extends State<CountdownCard> {
     );
 
     AlertDialog alert = AlertDialog(
-      elevation: 3.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
       title: Text(
-        "Confirm", //
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        "Confirm",
       ),
       content: Text(
-        "\nDelete ?",
-        style: TextStyle(
-          fontSize: 18,
-        ),
+        "Delete ?",
       ),
       actions: [
         okButton,
@@ -83,13 +72,12 @@ class _CountdownCardState extends State<CountdownCard> {
     );
   }
 
-  //BOTTOM MENU
   void openBottomMenu() {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(25.0),
-              topRight: const Radius.circular(25.0)),
+              topLeft: const Radius.circular(16.0),
+              topRight: const Radius.circular(16.0)),
         ),
         isScrollControlled: true,
         context: context,
@@ -104,17 +92,15 @@ class _CountdownCardState extends State<CountdownCard> {
                       leading: Icon(Icons.edit_outlined),
                       title: Text(
                         "Edit countdown",
-                        style: TextStyle(fontSize: 16),
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
                         Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            MaterialPageRoute(
                               builder: (BuildContext context) => EditCountdown(
                                 countdown: widget.countdown,
                               ),
-                              fullscreenDialog: true,
                             )).then((value) => widget.refreshHome());
                       },
                     ),
@@ -123,7 +109,6 @@ class _CountdownCardState extends State<CountdownCard> {
                       leading: Icon(Icons.delete_outline_outlined),
                       title: Text(
                         "Delete countdown",
-                        style: TextStyle(fontSize: 16),
                       ),
                       onTap: () {
                         showAlertDialogOkDelete(context);
@@ -164,20 +149,17 @@ class _CountdownCardState extends State<CountdownCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22,
-                          color: Theme.of(context)
-                              .textTheme
-                              .headline1!
-                              .color!
-                              .withOpacity(0.6)))
+                            color: Theme.of(context)
+                                .textTheme
+                                .headline1!
+                                .color!
+                                .withOpacity(0.6)))
                     : Text(countdown,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 24,
-                            color: Theme.of(context)
-                                .accentTextTheme
-                                .headline1!
-                                .color)),
+                            color: Theme.of(context).colorScheme.secondary)),
               ),
             ),
             Container(

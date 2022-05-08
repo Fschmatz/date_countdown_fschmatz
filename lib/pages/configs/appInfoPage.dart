@@ -1,18 +1,18 @@
-import 'package:date_countdown_fschmatz/util/changelog.dart';
+import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppInfoPage extends StatelessWidget {
-
-  _launchGithub()  {
-    const url = 'https://github.com/Fschmatz/date_countdown_fschmatz';
-    launch(url);
+  _launchGithub() {
+    launchUrl(
+      Uri.parse(AppDetails.repositoryLink),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    Color? themeColorText = Theme.of(context).accentTextTheme.headline1!.color;
+    Color? themeColorText = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
         appBar: AppBar(
@@ -30,68 +30,53 @@ class AppInfoPage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Center(
-            child: Text(Changelog.appName +" "+ Changelog.appVersion,
+            child: Text(AppDetails.appName + " " + AppDetails.appVersion,
                 style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
                     color: themeColorText)),
           ),
           const SizedBox(height: 15),
-          const Divider(),
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Dev".toUpperCase(),
+            title: Text("Dev",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                     color: themeColorText)),
           ),
           ListTile(
-            leading: Icon( Icons.info_outline),
+            leading: Icon(Icons.info_outline),
             title: Text(
               "Application created using Flutter and the Dart language, used for testing and learning.",
-              style: TextStyle(
-                fontSize: 16,
-              ),
             ),
           ),
-          const Divider(),
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Source Code".toUpperCase(),
+            title: Text("Source Code",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                     color: themeColorText)),
           ),
           ListTile(
-            onTap: () {_launchGithub();},
+            onTap: () {
+              _launchGithub();
+            },
             leading: Icon(Icons.open_in_new_outlined),
             title: Text("View on GitHub",
                 style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue)),
+                    decoration: TextDecoration.underline, color: Colors.blue)),
           ),
-          const Divider(),
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Quote".toUpperCase(),
+            title: Text("Quote",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                     color: themeColorText)),
           ),
           ListTile(
             leading: Icon(Icons.messenger_outline),
             title: Text(
               "By three methods we may learn wisdom: First, by reflection, which is noblest; Second, by imitation, which is easiest; and third by experience, which is the bitterest.",
-              style: TextStyle(fontSize: 16),
             ),
           ),
         ]));

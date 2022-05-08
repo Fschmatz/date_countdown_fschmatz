@@ -54,7 +54,6 @@ class _EditCountdownState extends State<EditCountdown> {
     Widget okButton = TextButton(
       child: Text(
         "Ok",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
         Navigator.of(context).pop();
@@ -62,16 +61,11 @@ class _EditCountdownState extends State<EditCountdown> {
     );
 
     AlertDialog alert = AlertDialog(
-      elevation: 3.0,
       title: Text(
         "Error",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: Text(
         checkProblems(),
-        style: TextStyle(
-          fontSize: 18,
-        ),
       ),
       actions: [
         okButton,
@@ -105,38 +99,30 @@ class _EditCountdownState extends State<EditCountdown> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Edit Countdown"),
-          elevation: 0,
           actions: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-              child: IconButton(
-                icon: Icon(Icons.save_outlined),
-                tooltip: 'Save',
-                onPressed: () {
-                  if (checkProblems().isEmpty) {
-                    _updateDayNote();
-                    Navigator.of(context).pop();
-                  } else {
-                    showAlertDialogErrors(context);
-                  }
-                },
-              ),
+            IconButton(
+              icon: Icon(Icons.save_outlined),
+              tooltip: 'Save',
+              onPressed: () {
+                if (checkProblems().isEmpty) {
+                  _updateDayNote();
+                  Navigator.of(context).pop();
+                } else {
+                  showAlertDialogErrors(context);
+                }
+              },
             ),
           ],
         ),
         body: ListView(children: [
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Note".toUpperCase(),
+            title: Text("Note",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).accentColor)),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary)),
           ),
           ListTile(
-            leading: Icon(Icons.notes_outlined),
             title: TextField(
               minLines: 1,
               maxLines: 3,
@@ -145,23 +131,18 @@ class _EditCountdownState extends State<EditCountdown> {
               controller: customControllerNote,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
-                focusColor: Theme.of(context).accentColor,
+                prefixIcon: Icon(Icons.notes_outlined),
+                focusColor: Theme.of(context).colorScheme.primary,
                 helperText: "* Required",
-              ),
-              style: TextStyle(
-                fontSize: 17,
               ),
             ),
           ),
           ListTile(
-            leading: SizedBox(
-              height: 0.1,
-            ),
-            title: Text("Choose Date".toUpperCase(),
+            title: Text("Choose Date",
                 style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).accentColor)),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.primary)),
           ),
           ListTile(
             onTap: () {
