@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/dialog_select_theme.dart';
-import 'appInfoPage.dart';
-import 'changelogPage.dart';
+import 'app_info.dart';
+import 'changelog.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -40,14 +40,13 @@ class _SettingsPageState extends State<SettingsPage> {
             Card(
               margin: const EdgeInsets.fromLTRB(16, 20, 16, 25),
               color: themeColorText,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-              ),
               child: ListTile(
                 title: Text(
                   AppDetails.appName + " " + AppDetails.appVersion,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 17.5),
+                  style: TextStyle(fontSize: 17.5,
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 ),
               ),
             ),
@@ -66,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   }),
               leading: const Icon(Icons.brightness_6_outlined),
               title: const Text(
-                "App Theme",
+                "App theme",
               ),
               subtitle: Text(
                 getThemeStringFormatted(),
@@ -84,7 +83,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Icons.info_outline,
               ),
               title: Text(
-                "App Info",
+                "App info",
               ),
               onTap: () {
                 Navigator.push(

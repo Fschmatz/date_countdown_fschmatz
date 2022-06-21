@@ -2,50 +2,47 @@ import 'package:flutter/material.dart';
 
 ThemeData light = ThemeData(
     useMaterial3: true,
+    textTheme: const TextTheme(
+      titleMedium: TextStyle(fontWeight: FontWeight.w400),
+    ),
     brightness: Brightness.light,
     primaryColor: Color(0xFFF3F2F2),
     scaffoldBackgroundColor: Color(0xFFF3F2F2),
     colorScheme: ColorScheme.light(
       primary: Colors.red,
       secondary: Colors.red,
+      onPrimary: Color(0xFFFFFFFF),
     ),
     appBarTheme: const AppBarTheme(
-        color: Color(0xFFF3F2F2),
-        elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xFF050505)),
-        titleTextStyle: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF000000))),
+      surfaceTintColor: Color(0xFFF3F2F2),
+      color: Color(0xFFF3F2F2),
+    ),
     cardTheme: CardTheme(
-      color: Color(0xFFFFFEFE), //0xFFF3F2F2
+      surfaceTintColor: Color(0xFFFFFEFE),
+      color: Color(0xFFFFFEFE),
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Color(0xFFFFFEFE),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(28)),
-      ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.redAccent.shade200),
     inputDecorationTheme: InputDecorationTheme(
-        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.red,
           ),
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey,
             ),
-            borderRadius: BorderRadius.circular(12.0)),
+            borderRadius: BorderRadius.circular(8.0)),
         border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey,
             ),
-            borderRadius: BorderRadius.circular(12.0))),
+            borderRadius: BorderRadius.circular(8.0))),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color(0xFFF3F2F2),
     ),
@@ -55,52 +52,48 @@ ThemeData light = ThemeData(
 
 ThemeData dark = ThemeData(
     useMaterial3: true,
+    textTheme: const TextTheme(
+      titleMedium: TextStyle(fontWeight: FontWeight.w400),
+    ),
     brightness: Brightness.dark,
     primaryColor: Color(0xFF1B1B1F),
     scaffoldBackgroundColor: Color(0xFF1B1B1F),
     colorScheme: ColorScheme.dark(
       primary: Color(0xFFD46062),
+      onPrimary: Color(0xFF60131A),
       secondary: Color(0xFFff8b87),
     ),
     appBarTheme: const AppBarTheme(
-        color: Color(0xFF1B1B1F),
-        elevation: 0,
-        iconTheme: IconThemeData(color: Color(0xFFF5F5F5)),
-        titleTextStyle: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFFFFFFFF))),
+      surfaceTintColor: Color(0xFF1B1B1F),
+      color: Color(0xFF1B1B1F),
+    ),
     cardTheme: CardTheme(
-      elevation: 0,
+      surfaceTintColor: Color(0xFF2B2B2F),
       color: Color(0xFF2B2B2F),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFe3787a),
+      backgroundColor: Color(0xFFFFB3B3),
     ),
     dialogTheme: DialogTheme(
       backgroundColor: Color(0xFF2B2B2F),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(28)),
-      ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Color(0xFFD46062),
           ),
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.grey.shade800,
+              color: Color(0xFF938180),
             ),
-            borderRadius: BorderRadius.circular(12.0)),
+            borderRadius: BorderRadius.circular(8.0)),
         border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.grey.shade800,
+              color: Color(0xFF938180),
             ),
-            borderRadius: BorderRadius.circular(12.0))),
+            borderRadius: BorderRadius.circular(8.0))),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color(0xFF1B1B1F),
     ),

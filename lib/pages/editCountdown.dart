@@ -17,13 +17,13 @@ class _EditCountdownState extends State<EditCountdown> {
   final dbCountDown = CountdownDao.instance;
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
-
-  TextEditingController customControllerNote = TextEditingController();
+  bool _validNote = true;
+  TextEditingController controllerNote = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    customControllerNote.text = widget.countdown.note;
+    controllerNote.text = widget.countdown.note;
     dateSelectedComplete = DateTime.parse(widget.countdown.completeDate);
     dateSelected = DateFormat('dd/MM/yyyy').parse(widget.countdown.date);
   }
@@ -37,46 +37,17 @@ class _EditCountdownState extends State<EditCountdown> {
       CountdownDao.columnId: widget.countdown.id,
       CountdownDao.columnDate: getSelectedDateFormatted().toString(),
       CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
-      CountdownDao.columnNote: customControllerNote.text,
+      CountdownDao.columnNote: controllerNote.text,
     };
     final update = await dbCountDown.update(row);
   }
 
-  String checkProblems() {
-    String errors = "";
-    if (customControllerNote.text.isEmpty) {
-      errors += "Note is empty\n";
+  bool validateTextFields() {
+    if (controllerNote.text.isEmpty) {
+      _validNote = false;
+      return false;
     }
-    return errors;
-  }
-
-  showAlertDialogErrors(BuildContext context) {
-    Widget okButton = TextButton(
-      child: Text(
-        "Ok",
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        "Error",
-      ),
-      content: Text(
-        checkProblems(),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+    return true;
   }
 
   chooseDate() async {
@@ -84,7 +55,19 @@ class _EditCountdownState extends State<EditCountdown> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5));
+        lastDate: DateTime(DateTime.now().year + 5),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Theme.of(context).colorScheme.primary,
+                onSurface: Theme.of(context).textTheme.headline6!.color!,
+                background: Theme.of(context).primaryColor,
+              ),
+            ),
+            child: child!,
+          );
+        });
 
     if (data != null) {
       setState(() {
@@ -104,47 +87,46 @@ class _EditCountdownState extends State<EditCountdown> {
               icon: Icon(Icons.save_outlined),
               tooltip: 'Save',
               onPressed: () {
-                if (checkProblems().isEmpty) {
+                if (validateTextFields()) {
                   _updateDayNote();
                   Navigator.of(context).pop();
                 } else {
-                  showAlertDialogErrors(context);
+                  setState(() {
+                    _validNote;
+                  });
                 }
               },
             ),
           ],
         ),
         body: ListView(children: [
-          ListTile(
-            title: Text("Note",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary)),
-          ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               minLines: 1,
               maxLines: 3,
               maxLength: 200,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              controller: customControllerNote,
+
               textCapitalization: TextCapitalization.sentences,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: controllerNote,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.notes_outlined),
-                focusColor: Theme.of(context).colorScheme.primary,
-                helperText: "* Required",
-              ),
+                  labelText: "Note",
+                  helperText: "* Required",
+                  errorText: _validNote ? null : "Note is empty"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 12, 25, 10),
+            child: Text(
+              "Choose date",
+              style:
+              TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
             ),
           ),
           ListTile(
-            title: Text("Choose Date",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary)),
-          ),
-          ListTile(
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             onTap: () {
               chooseDate();
             },

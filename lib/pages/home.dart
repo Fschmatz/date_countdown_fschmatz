@@ -4,7 +4,7 @@ import 'package:date_countdown_fschmatz/db/countdownDao.dart';
 import 'package:date_countdown_fschmatz/pages/newCountdown.dart';
 import 'package:date_countdown_fschmatz/widgets/countdownCard.dart';
 import 'package:flutter/material.dart';
-import 'configs/settingsPage.dart';
+import 'configs/settings.dart';
 
 class Home extends StatefulWidget {
   @override

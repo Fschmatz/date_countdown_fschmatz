@@ -128,9 +128,6 @@ class _CountdownCardState extends State<CountdownCard> {
 
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
@@ -176,16 +173,18 @@ class _CountdownCardState extends State<CountdownCard> {
                     leading: Icon(
                       Icons.notes_outlined,
                     ),
-                    title: Text(widget.countdown.note,
-                        style: TextStyle(fontSize: 16)),
+                    title: Text(
+                      widget.countdown.note,
+                    ),
                   ),
                   ListTile(
                     contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     leading: Icon(
                       Icons.calendar_today_outlined,
                     ),
-                    title: Text(widget.countdown.date,
-                        style: TextStyle(fontSize: 16)),
+                    title: Text(
+                      widget.countdown.date,
+                    ),
                   ),
                 ],
               ),

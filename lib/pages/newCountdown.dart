@@ -12,8 +12,8 @@ class _NewCountdownState extends State<NewCountdown> {
   final dbCountDown = CountdownDao.instance;
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
-
-  TextEditingController customControllerNote = TextEditingController();
+  bool _validNote = true;
+  TextEditingController controllerNote = TextEditingController();
 
   @override
   void initState() {
@@ -28,50 +28,19 @@ class _NewCountdownState extends State<NewCountdown> {
 
   void _saveNote() async {
     Map<String, dynamic> row = {
-      CountdownDao.columnNote: customControllerNote.text,
+      CountdownDao.columnNote: controllerNote.text,
       CountdownDao.columnDate: getSelectedDateFormatted().toString(),
       CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
     };
     final id = await dbCountDown.insert(row);
-    print(dateSelectedComplete.toString());
-    print('id = $id');
   }
 
-  String checkProblems() {
-    String errors = "";
-    if (customControllerNote.text.isEmpty) {
-      errors += "Note is empty\n";
+  bool validateTextFields() {
+    if (controllerNote.text.isEmpty) {
+      _validNote = false;
+      return false;
     }
-    return errors;
-  }
-
-  showAlertDialogErrors(BuildContext context) {
-    Widget okButton = TextButton(
-      child: Text(
-        "Ok",
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        "Error",
-      ),
-      content: Text(
-        checkProblems(),
-      ),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+    return true;
   }
 
   chooseDate() async {
@@ -79,7 +48,19 @@ class _NewCountdownState extends State<NewCountdown> {
         context: context,
         initialDate: dateSelected,
         firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 10));
+        lastDate: DateTime(DateTime.now().year + 10),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Theme.of(context).colorScheme.primary,
+                onSurface: Theme.of(context).textTheme.headline6!.color!,
+                background: Theme.of(context).primaryColor,
+              ),
+            ),
+            child: child!,
+          );
+        });
 
     if (data != null) {
       setState(() {
@@ -99,48 +80,46 @@ class _NewCountdownState extends State<NewCountdown> {
               icon: Icon(Icons.save_outlined),
               tooltip: 'Save',
               onPressed: () {
-                if (checkProblems().isEmpty) {
+                if (validateTextFields()) {
                   _saveNote();
                   Navigator.of(context).pop();
                 } else {
-                  showAlertDialogErrors(context);
+                  setState(() {
+                    _validNote;
+                  });
                 }
               },
             ),
           ],
         ),
         body: ListView(children: [
-          ListTile(
-            title: Text("Note",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary)),
-          ),
-          ListTile(
-            title: TextField(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
               minLines: 1,
               maxLines: 3,
               maxLength: 200,
               autofocus: true,
               textCapitalization: TextCapitalization.sentences,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              controller: customControllerNote,
+              controller: controllerNote,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.notes_outlined),
-                focusColor: Theme.of(context).colorScheme.primary,
-                helperText: "* Required",
-              ),
+                  labelText: "Note",
+                  helperText: "* Required",
+                  errorText: _validNote ? null : "Note is empty"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 12, 25, 10),
+            child: Text(
+              "Choose date",
+              style:
+                  TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
             ),
           ),
           ListTile(
-            title: Text("Choose Date",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).colorScheme.primary)),
-          ),
-          ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
             onTap: () {
               chooseDate();
             },
