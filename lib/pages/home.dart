@@ -84,9 +84,6 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
         onPressed: () {
           Navigator.push(
               context,
@@ -94,7 +91,10 @@ class _HomeState extends State<Home> {
                 builder: (BuildContext context) => NewCountdown(),
               )).then((value) => getAll());
         },
-        child: Icon(Icons.add_outlined, color: Colors.black87),
+        child: Icon(
+            Icons.add_outlined,
+            color: Theme.of(context).colorScheme.onPrimary
+        ),
       ),
     );
   }

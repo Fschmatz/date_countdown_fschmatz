@@ -86,12 +86,12 @@ ThemeData dark = ThemeData(
         ),
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color(0xFF938180),
+              color: Color(0xFF968C8B),
             ),
             borderRadius: BorderRadius.circular(8.0)),
         border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color(0xFF938180),
+              color: Color(0xFF968C8B),
             ),
             borderRadius: BorderRadius.circular(8.0))),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

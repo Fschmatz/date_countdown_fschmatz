@@ -7,6 +7,7 @@ class AppDetails{
   static String changelogCurrent = '''
 1.5.0
 - Bug Fix
+- Print page
 - Flutter 3
 ''';
 

@@ -4,6 +4,7 @@ import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../util/dialog_print.dart';
 import '../../util/dialog_select_theme.dart';
 import 'app_info.dart';
 import 'changelog.dart';
@@ -71,6 +72,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 getThemeStringFormatted(),
               ),
             ),
+            ListTile(
+                leading: const Icon(Icons.print_outlined),
+                title: const Text("Print countdowns"),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => DialogPrint(),
+                      fullscreenDialog: true,
+                    ))),
             ListTile(
               title: Text("About",
                   style: TextStyle(
