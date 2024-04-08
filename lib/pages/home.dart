@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Map<String, dynamic>> countdownList = [];
+  List<Countdown> countdownList = [];
   final dbCountDown = CountdownDao.instance;
 
   @override
@@ -25,9 +25,15 @@ class _HomeState extends State<Home> {
 
   Future<void> loadCountdowns() async {
     var resp = await dbCountDown.queryAllRowsDesc();
+    List<Countdown> response = [];
+
+    if (resp.isNotEmpty) {
+      response = resp.map((map) => Countdown.fromMap(map)).toList()
+        ..sort((a, b) => DateTime.parse(a.completeDate!).compareTo(DateTime.parse(b.completeDate!)));
+    }
 
     setState(() {
-      countdownList = resp;
+      countdownList = response;
     });
   }
 
@@ -62,10 +68,7 @@ class _HomeState extends State<Home> {
               shrinkWrap: true,
               itemCount: countdownList.length,
               itemBuilder: (context, index) {
-                return CountdownCard(
-                    key: UniqueKey(),
-                    countdown: Countdown.fromMap(countdownList[index]),
-                    refreshHome: loadCountdowns);
+                return CountdownCard(key: UniqueKey(), countdown: countdownList[index], refreshHome: loadCountdowns);
               }),
           const SizedBox(
             height: 100,

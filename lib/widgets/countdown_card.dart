@@ -78,38 +78,36 @@ class _CountdownCardState extends State<CountdownCard> {
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Wrap(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.edit_outlined),
-                      title: Text(
-                        "Edit",
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => EditCountdown(
-                                countdown: widget.countdown,
-                              ),
-                            )).then((value) => widget.refreshHome());
-                      },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.edit_outlined),
+                    title: Text(
+                      "Edit",
                     ),
-                    ListTile(
-                      leading: Icon(Icons.delete_outline_outlined),
-                      title: Text(
-                        "Delete",
-                      ),
-                      onTap: () {
-                        showAlertDialogOkDelete(context);
-                      },
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => EditCountdown(
+                              countdown: widget.countdown,
+                            ),
+                          )).then((value) => widget.refreshHome());
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete_outline_outlined),
+                    title: Text(
+                      "Delete",
                     ),
-                  ],
-                ),
+                    onTap: () {
+                      showAlertDialogOkDelete(context);
+                    },
+                  ),
+                ],
               ),
             ),
           );

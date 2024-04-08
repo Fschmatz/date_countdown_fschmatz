@@ -1,12 +1,12 @@
 class AppDetails{
 
-  static String appVersion = "2.0.0";
+  static String appVersion = "2.0.1";
   static String appName = "Date Countdown Fschmatz";
   static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
 
   static String changelogCurrent = '''
-2.0.0
+2.0.1
 - Monet
 - UI changes
 - Small fixes
