@@ -1,4 +1,4 @@
-import 'package:date_countdown_fschmatz/db/countdownDao.dart';
+import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

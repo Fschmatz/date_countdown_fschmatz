@@ -64,7 +64,7 @@ class AppInfoPage extends StatelessWidget {
             leading: Icon(Icons.open_in_new_outlined),
             title: Text("View on GitHub",
                 style: TextStyle(
-                    decoration: TextDecoration.underline, color: Colors.blue)),
+                    decoration: TextDecoration.underline, decorationColor: Colors.blue, color: Colors.blue)),
           ),
           ListTile(
             title: Text("Quote",

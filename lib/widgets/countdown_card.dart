@@ -1,6 +1,6 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/db/countdownDao.dart';
-import 'package:date_countdown_fschmatz/pages/editCountdown.dart';
+import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
+import 'package:date_countdown_fschmatz/pages/edit_countdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,27 +16,28 @@ class CountdownCard extends StatefulWidget {
 }
 
 class _CountdownCardState extends State<CountdownCard> {
+
   Future<void> _delete() async {
     final dbCountDown = CountdownDao.instance;
-    final deleted = await dbCountDown.delete(widget.countdown.id);
+    await dbCountDown.delete(widget.countdown.id!);
   }
 
   getDateCountdown() {
     DateTime now = DateTime.now();
-    DateTime savedDate = DateTime.parse(widget.countdown.completeDate);
-    Duration timeleft = savedDate.difference(now);
+    DateTime savedDate = DateTime.parse(widget.countdown.completeDate!);
+    Duration timeLeft = savedDate.difference(now);
 
     if (now.day.compareTo(savedDate.day).isEven &&
         now.month.compareTo(savedDate.month).isEven) {
       return 'Today';
-    } else if (((timeleft.inDays) + 1) == 1) {
+    } else if (((timeLeft.inDays) + 1) == 1) {
       return '1\nDay    ';
-    } else if (timeleft.inDays < 0) {
-      return ((timeleft.inDays).abs() == 1
-          ? (timeleft.inDays).abs().toString() + '\nDay     \nAgo'
-          : (timeleft.inDays).abs().toString() + '\nDays   \nAgo');
+    } else if (timeLeft.inDays < 0) {
+      return ((timeLeft.inDays).abs() == 1
+          ? (timeLeft.inDays).abs().toString() + '\nDay     \nAgo'
+          : (timeLeft.inDays).abs().toString() + '\nDays   \nAgo');
     } else {
-      return ((timeleft.inDays) + 1).toString() + '\nDays  ';
+      return ((timeLeft.inDays) + 1).toString() + '\nDays  ';
     }
   }
 
@@ -74,12 +75,6 @@ class _CountdownCardState extends State<CountdownCard> {
 
   void openBottomMenu() {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(16.0),
-              topRight: const Radius.circular(16.0)),
-        ),
-        isScrollControlled: true,
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
@@ -91,7 +86,7 @@ class _CountdownCardState extends State<CountdownCard> {
                     ListTile(
                       leading: Icon(Icons.edit_outlined),
                       title: Text(
-                        "Edit countdown",
+                        "Edit",
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
@@ -104,11 +99,10 @@ class _CountdownCardState extends State<CountdownCard> {
                             )).then((value) => widget.refreshHome());
                       },
                     ),
-                    const Divider(),
                     ListTile(
                       leading: Icon(Icons.delete_outline_outlined),
                       title: Text(
-                        "Delete countdown",
+                        "Delete",
                       ),
                       onTap: () {
                         showAlertDialogOkDelete(context);
@@ -125,6 +119,7 @@ class _CountdownCardState extends State<CountdownCard> {
   @override
   Widget build(BuildContext context) {
     String countdown = getDateCountdown();
+    final theme = Theme.of(context);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
@@ -146,17 +141,13 @@ class _CountdownCardState extends State<CountdownCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 22,
-                            color: Theme.of(context)
-                                .textTheme
-                                .headline1!
-                                .color!
-                                .withOpacity(0.6)))
+                            color: theme.hintColor))
                     : Text(countdown,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 24,
-                            color: Theme.of(context).colorScheme.secondary)),
+                            color: theme.colorScheme.primary)),
               ),
             ),
             Container(
@@ -174,7 +165,7 @@ class _CountdownCardState extends State<CountdownCard> {
                       Icons.notes_outlined,
                     ),
                     title: Text(
-                      widget.countdown.note,
+                      widget.countdown.note!,
                     ),
                   ),
                   ListTile(
@@ -183,7 +174,7 @@ class _CountdownCardState extends State<CountdownCard> {
                       Icons.calendar_today_outlined,
                     ),
                     title: Text(
-                      widget.countdown.date,
+                      widget.countdown.date!,
                     ),
                   ),
                 ],

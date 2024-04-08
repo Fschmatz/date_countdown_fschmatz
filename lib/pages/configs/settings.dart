@@ -1,9 +1,6 @@
 import 'package:date_countdown_fschmatz/util/app_details.dart';
-import 'package:date_countdown_fschmatz/util/theme.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../util/dialog_print.dart';
 import '../../util/dialog_select_theme.dart';
 import 'app_info.dart';
@@ -17,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+
   String getThemeStringFormatted() {
     String theme = EasyDynamicTheme.of(context)
         .themeMode

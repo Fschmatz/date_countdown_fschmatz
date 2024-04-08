@@ -1,4 +1,4 @@
-import 'package:date_countdown_fschmatz/db/countdownDao.dart';
+import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -13,16 +13,19 @@ class _NewCountdownState extends State<NewCountdown> {
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
   bool _validNote = true;
+  bool _validDate = true;
   TextEditingController controllerNote = TextEditingController();
+  TextEditingController controllerDate = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+
     dateSelected = DateTime.now();
     dateSelectedComplete = DateTime.now();
   }
 
-  getSelectedDateFormatted() {
+  String getSelectedDateFormatted() {
     return DateFormat('dd/MM/yyyy').format(dateSelected);
   }
 
@@ -32,15 +35,22 @@ class _NewCountdownState extends State<NewCountdown> {
       CountdownDao.columnDate: getSelectedDateFormatted().toString(),
       CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
     };
-    final id = await dbCountDown.insert(row);
+
+    await dbCountDown.insert(row);
   }
 
-  bool validateTextFields() {
+  bool _validateBeforeStore() {
+    bool ok = true;
     if (controllerNote.text.isEmpty) {
+      ok = false;
       _validNote = false;
-      return false;
     }
-    return true;
+    if (controllerDate.text.isEmpty) {
+      ok = false;
+      _validDate = false;
+    }
+
+    return ok;
   }
 
   chooseDate() async {
@@ -50,47 +60,24 @@ class _NewCountdownState extends State<NewCountdown> {
         firstDate: DateTime(DateTime.now().year - 5),
         lastDate: DateTime(DateTime.now().year + 10),
         builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: ColorScheme.light(
-                primary: Theme.of(context).colorScheme.primary,
-                onSurface: Theme.of(context).textTheme.headline6!.color!,
-                background: Theme.of(context).primaryColor,
-              ),
-            ),
-            child: child!,
-          );
+          return child!;
         });
 
     if (data != null) {
       setState(() {
         dateSelected = data;
         dateSelectedComplete = data;
+        controllerDate.text = DateFormat('dd/MM/yyyy').format(dateSelected);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
-          title: Text("New Countdown"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.save_outlined),
-              tooltip: 'Save',
-              onPressed: () {
-                if (validateTextFields()) {
-                  _saveNote();
-                  Navigator.of(context).pop();
-                } else {
-                  setState(() {
-                    _validNote;
-                  });
-                }
-              },
-            ),
-          ],
+          title: Text("New"),
         ),
         body: ListView(children: [
           Padding(
@@ -104,27 +91,43 @@ class _NewCountdownState extends State<NewCountdown> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controllerNote,
               decoration: InputDecoration(
-                  labelText: "Note",
-                  helperText: "* Required",
-                  errorText: _validNote ? null : "Note is empty"),
+                  border: const OutlineInputBorder(), labelText: "Note", helperText: "* Required", errorText: _validNote ? null : "Note is empty"),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(18, 12, 25, 10),
-            child: Text(
-              "Choose date",
-              style:
-                  TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: TextField(
+              readOnly: true,
+              controller: controllerDate,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: "Date",
+                  helperText: "* Required",
+                  errorText: _validDate ? null : "Date is empty",
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        chooseDate();
+                      },
+                      icon: const Icon(
+                        Icons.calendar_today_outlined,
+                      ))),
             ),
           ),
-          ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-            onTap: () {
-              chooseDate();
-            },
-            leading: Icon(Icons.calendar_today_outlined),
-            title: Text(getSelectedDateFormatted().toString()),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+            child: FilledButton.icon(
+                onPressed: () {
+                  if (_validateBeforeStore()) {
+                    _saveNote();
+                    Navigator.of(context).pop();
+                  } else {
+                    setState(() {
+                      _validNote;
+                    });
+                  }
+                },
+                icon: Icon(Icons.save_outlined),
+                label: Text('Save')),
           ),
         ]));
   }

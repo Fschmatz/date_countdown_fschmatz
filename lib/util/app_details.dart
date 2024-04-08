@@ -1,39 +1,50 @@
 class AppDetails{
 
-  static String appVersion = "1.5.0";
+  static String appVersion = "2.0.0";
   static String appName = "Date Countdown Fschmatz";
+  static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
 
   static String changelogCurrent = '''
-1.5.0
-- Bug Fix
-- Print page
-- Flutter 3
+2.0.0
+- Monet
+- UI changes
+- Small fixes
+- Flutter 3.19
 ''';
 
-  static String changelogsOld = ''' 
+  static String changelogsOld = '''
+1.6.0
+- UI changes
+- Flutter 3.10
+
+1.5.0
+- Bug fix
+- Print page
+- Flutter 3
+
 1.4.1
-- UI Changes
-- Bug Fix
-- Added System Theme
+- UI changes
+- Bug fix
+- Added system theme
 
 1.3.2
-- UI Changes
-- Bug Fix
+- UI changes
+- Bug fix
 - Pull down to refresh
 
 1.2.1
-- Home Changes
-- Removed BottomBar
-- Bug Fix
+- Home changes
+- Removed bottomBar
+- Bug fix
 
 1.1.0
-- Days Ago
-- Small Fix
+- Days ago
+- Small fix
 
 1.0.1
-- Technically Usable
-- UI Changes
+- Technically usable
+- UI changes
 
 0.4.0
 - Edit OK
@@ -47,8 +58,7 @@ class AppDetails{
 - Home 
 
 0.1.0
-- Project Start                                 
-
+- Project Start
 ''';
 
 }
