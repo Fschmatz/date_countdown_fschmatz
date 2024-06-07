@@ -5,6 +5,7 @@ import 'package:date_countdown_fschmatz/pages/new_countdown.dart';
 import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:date_countdown_fschmatz/widgets/countdown_card.dart';
 import 'package:flutter/material.dart';
+import '../service/countdown_service.dart';
 import 'configs/settings.dart';
 
 class Home extends StatefulWidget {
@@ -13,8 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Countdown> countdownList = [];
-  final dbCountDown = CountdownDao.instance;
+  CountdownService countdownService = CountdownService.instance;
+  List<Countdown> _countdownList = [];
+  bool _loading = true;
 
   @override
   void initState() {
@@ -24,16 +26,10 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> loadCountdowns() async {
-    var resp = await dbCountDown.queryAllRowsDesc();
-    List<Countdown> response = [];
-
-    if (resp.isNotEmpty) {
-      response = resp.map((map) => Countdown.fromMap(map)).toList()
-        ..sort((a, b) => DateTime.parse(a.completeDate!).compareTo(DateTime.parse(b.completeDate!)));
-    }
+    _countdownList = await countdownService.queryAllRowsOrderByDateAsc();
 
     setState(() {
-      countdownList = response;
+      _loading = false;
     });
   }
 
@@ -59,21 +55,28 @@ class _HomeState extends State<Home> {
       body: RefreshIndicator(
         onRefresh: loadCountdowns,
         color: Theme.of(context).colorScheme.primary,
-        child: ListView(physics: AlwaysScrollableScrollPhysics(), children: [
-          ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => const SizedBox(
-                    height: 12,
-                  ),
-              shrinkWrap: true,
-              itemCount: countdownList.length,
-              itemBuilder: (context, index) {
-                return CountdownCard(key: UniqueKey(), countdown: countdownList[index], refreshHome: loadCountdowns);
-              }),
-          const SizedBox(
-            height: 100,
-          )
-        ]),
+        child: _loading
+            ? SizedBox.shrink()
+            : ListView(
+                physics: AlwaysScrollableScrollPhysics(),
+                children: [
+                  ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) => const SizedBox(
+                            height: 4,
+                          ),
+                      shrinkWrap: true,
+                      itemCount: _countdownList.length,
+                      itemBuilder: (context, index) {
+                        Countdown countdown = _countdownList[index];
+
+                        return CountdownCard(key: UniqueKey(), countdown: countdown, refreshHome: loadCountdowns);
+                      }),
+                  const SizedBox(
+                    height: 100,
+                  )
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

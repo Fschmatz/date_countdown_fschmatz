@@ -2,6 +2,9 @@ import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../classes/countdown.dart';
+import '../service/countdown_service.dart';
+
 class DialogPrint extends StatefulWidget {
   DialogPrint({Key? key}) : super(key: key);
 
@@ -10,7 +13,7 @@ class DialogPrint extends StatefulWidget {
 }
 
 class _DialogPrintState extends State<DialogPrint> {
-  final db = CountdownDao.instance;
+  CountdownService countdownService = CountdownService.instance;
   bool loading = true;
   String formattedList = '';
 
@@ -21,20 +24,19 @@ class _DialogPrintState extends State<DialogPrint> {
   }
 
   void getNotes() async {
-    List<Map<String, dynamic>> _listNotes = await db.queryAllRowsDesc();
+    List<Countdown> _countdownList = await countdownService.queryAllRowsDesc();
 
-    formattedList += 'Countdowns - ' + _listNotes.length.toString() + ' \n\n';
-    for (int i = 0; i < _listNotes.length; i++) {
-      if (_listNotes[i]['note'].toString().isNotEmpty) {
-        formattedList += _listNotes[i]['note'] + "\n";
-        formattedList += _listNotes[i]['date'] + "\n";
-        formattedList += "---------------\n";
-      }
+    formattedList += 'Countdowns - ' + _countdownList.length.toString() + ' \n\n';
 
-      setState(() {
-        loading = false;
-      });
+    for (int i = 0; i < _countdownList.length; i++) {
+        formattedList += _countdownList[i].note! + "\n";
+        formattedList += _countdownList[i].getDateFormatted() + "\n";
+        formattedList += "\n";
     }
+
+    setState(() {
+      loading = false;
+    });
   }
 
   @override

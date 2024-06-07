@@ -1,19 +1,24 @@
 class AppDetails{
 
-  static String appVersion = "2.0.1";
+  static String appVersion = "2.1.0";
   static String appName = "Date Countdown Fschmatz";
   static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
 
   static String changelogCurrent = '''
+2.1.0
+- DB changes
+- UI changes
+- Small fixes
+''';
+
+  static String changelogsOld = '''
 2.0.1
 - Monet
 - UI changes
 - Small fixes
 - Flutter 3.19
-''';
 
-  static String changelogsOld = '''
 1.6.0
 - UI changes
 - Flutter 3.10

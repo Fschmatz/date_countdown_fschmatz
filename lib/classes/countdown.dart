@@ -1,17 +1,27 @@
+import 'package:intl/intl.dart';
+
 class Countdown{
   int? id;
-  String? date;
-  String? completeDate;
+  DateTime? date;
   String? note;
+  DateTime? createdAt;
 
-  Countdown({this.id, this.date, this.note, this.completeDate});
+  Countdown({this.id, this.date, this.note, this.createdAt});
 
   factory Countdown.fromMap(Map<String, dynamic> map) {
     return Countdown(
       id: map['id'],
-      date: map['date'],
-      completeDate : map['completeDate'],
+      date: DateTime.parse(map['date']),
       note: map['note'],
+      createdAt: DateTime.parse(map['createdAt'])
     );
+  }
+
+  String getDateFormatted() {
+    return DateFormat('dd/MM/yyyy').format(date!);
+  }
+
+  String getCreatedAtFormatted() {
+    return DateFormat('dd/MM/yyyy').format(createdAt!);
   }
 }

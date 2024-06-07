@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../classes/countdown.dart';
+import '../service/countdown_service.dart';
+
 class NewCountdown extends StatefulWidget {
   @override
   _NewCountdownState createState() => _NewCountdownState();
 }
 
 class _NewCountdownState extends State<NewCountdown> {
-  final dbCountDown = CountdownDao.instance;
+  CountdownService countdownService = CountdownService.instance;
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
   bool _validNote = true;
@@ -25,18 +28,12 @@ class _NewCountdownState extends State<NewCountdown> {
     dateSelectedComplete = DateTime.now();
   }
 
-  String getSelectedDateFormatted() {
-    return DateFormat('dd/MM/yyyy').format(dateSelected);
-  }
+  void _insert() async {
+    Countdown toInsert = new Countdown();
+    toInsert.note = controllerNote.text;
+    toInsert.date = dateSelected;
 
-  void _saveNote() async {
-    Map<String, dynamic> row = {
-      CountdownDao.columnNote: controllerNote.text,
-      CountdownDao.columnDate: getSelectedDateFormatted().toString(),
-      CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
-    };
-
-    await dbCountDown.insert(row);
+    await countdownService.insert(toInsert);
   }
 
   bool _validateBeforeStore() {
@@ -74,7 +71,6 @@ class _NewCountdownState extends State<NewCountdown> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("New"),
@@ -118,7 +114,7 @@ class _NewCountdownState extends State<NewCountdown> {
             child: FilledButton.icon(
                 onPressed: () {
                   if (_validateBeforeStore()) {
-                    _saveNote();
+                    _insert();
                     Navigator.of(context).pop();
                   } else {
                     setState(() {

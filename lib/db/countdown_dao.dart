@@ -5,14 +5,14 @@ import 'package:path_provider/path_provider.dart';
 
 class CountdownDao {
 
-  static final _databaseName = 'DayStudy.db';
+  static final _databaseName = 'DateCountdown.db';
   static final _databaseVersion = 1;
 
   static final table = 'note';
   static final columnId = 'id';
   static final columnDate = 'date';
-  static final columnCompleteDate = 'completeDate';
   static final columnNote = 'note';
+  static final columnCreatedAt = 'createdAt';
 
   static Database? _database;
   Future<Database> get database async =>
@@ -36,13 +36,12 @@ class CountdownDao {
     await db.execute('''
           CREATE TABLE $table (
            $columnId INTEGER PRIMARY KEY,            
-           $columnDate TEXT NOT NULL,  
-           $columnCompleteDate TEXT NOT NULL,
-           $columnNote TEXT NOT NULL
+           $columnDate TEXT NOT NULL,           
+           $columnNote TEXT NOT NULL,
+           $columnCreatedAt TEXT NOT NULL
           )
           ''');
   }
-
 
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
@@ -68,6 +67,16 @@ class CountdownDao {
   Future<int> delete(int id) async {
     Database db = await instance.database;
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllRowsOrderByDateDesc() async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table ORDER BY date DESC');
+  }
+
+  Future<List<Map<String, dynamic>>> queryAllRowsOrderByDateAsc() async {
+    Database db = await instance.database;
+    return await db.rawQuery('SELECT * FROM $table ORDER BY date ');
   }
 
 }

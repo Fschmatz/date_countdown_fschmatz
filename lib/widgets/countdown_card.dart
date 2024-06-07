@@ -1,8 +1,8 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
 import 'package:date_countdown_fschmatz/pages/edit_countdown.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
+import '../service/countdown_service.dart';
 
 class CountdownCard extends StatefulWidget {
   @override
@@ -11,34 +11,67 @@ class CountdownCard extends StatefulWidget {
   Countdown countdown;
   Function() refreshHome;
 
-  CountdownCard({Key? key, required this.countdown, required this.refreshHome})
-      : super(key: key);
+  CountdownCard({Key? key, required this.countdown, required this.refreshHome}) : super(key: key);
 }
 
 class _CountdownCardState extends State<CountdownCard> {
+  CountdownService countdownService = CountdownService.instance;
+  bool isPast = false;
+  bool isToday = false;
+  bool isFuture = false;
+  int differenceInDays = 0;
 
-  Future<void> _delete() async {
-    final dbCountDown = CountdownDao.instance;
-    await dbCountDown.delete(widget.countdown.id!);
+  @override
+  void initState() {
+    super.initState();
+
+    _calculateDateValues();
   }
 
-  getDateCountdown() {
-    DateTime now = DateTime.now();
-    DateTime savedDate = DateTime.parse(widget.countdown.completeDate!);
-    Duration timeLeft = savedDate.difference(now);
+  void _calculateDateValues() {
+    Jiffy today = Jiffy.now();
+    Jiffy date = Jiffy.parseFromDateTime(widget.countdown.date!);
 
-    if (now.day.compareTo(savedDate.day).isEven &&
-        now.month.compareTo(savedDate.month).isEven) {
-      return 'Today';
-    } else if (((timeLeft.inDays) + 1) == 1) {
-      return '1\nDay    ';
-    } else if (timeLeft.inDays < 0) {
-      return ((timeLeft.inDays).abs() == 1
-          ? (timeLeft.inDays).abs().toString() + '\nDay     \nAgo'
-          : (timeLeft.inDays).abs().toString() + '\nDays   \nAgo');
-    } else {
-      return ((timeLeft.inDays) + 1).toString() + '\nDays  ';
+    differenceInDays = Jiffy.parseFromDateTime(widget.countdown.date!).diff(today, unit: Unit.day).round().abs() + 1;
+    isPast = date.isBefore(today, unit: Unit.day);
+    isToday = date.isSame(today, unit: Unit.day);
+    isFuture = date.isAfter(today, unit: Unit.day);
+  }
+
+  String _generateCountdownText() {
+    String comparisonResult = "";
+    if (isPast) {
+      comparisonResult = differenceInDays.toString() + " Days Ago";
+    } else if (isToday) {
+      comparisonResult = "Today";
+    } else if (isFuture) {
+      if (differenceInDays == 1)
+        comparisonResult = "Tomorrow";
+      else
+        comparisonResult = "In " + differenceInDays.toString() + " Days";
     }
+
+    return comparisonResult;
+  }
+
+  Card _generateTopInfoCard(ThemeData theme) {
+    Color backgroundColor = Colors.grey;
+    Color textColor = Colors.white12;
+
+    if (isPast) {
+      backgroundColor = theme.colorScheme.surfaceVariant;
+      textColor = theme.colorScheme.onSurfaceVariant;
+    } else if (isToday) {
+      backgroundColor = theme.colorScheme.primaryContainer;
+      textColor = theme.colorScheme.primary;
+    } else if (isFuture) {
+      backgroundColor = theme.colorScheme.secondaryContainer;
+      textColor = theme.colorScheme.secondary;
+    }
+
+    return Card(
+        color: backgroundColor,
+        child: ListTile(title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor))));
   }
 
   showAlertDialogOkDelete(BuildContext context) {
@@ -46,8 +79,8 @@ class _CountdownCardState extends State<CountdownCard> {
       child: Text(
         "Yes",
       ),
-      onPressed: () {
-        _delete();
+      onPressed: () async {
+        await countdownService.delete(widget.countdown.id!);
         widget.refreshHome();
         Navigator.of(context).pop();
         Navigator.of(context).pop();
@@ -83,6 +116,18 @@ class _CountdownCardState extends State<CountdownCard> {
               child: Wrap(
                 children: <Widget>[
                   ListTile(
+                    dense: true,
+                    title: Text(
+                      "Created at:",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    trailing: Text(
+                      widget.countdown.getCreatedAtFormatted(),
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
                     leading: Icon(Icons.edit_outlined),
                     title: Text(
                       "Edit",
@@ -116,66 +161,35 @@ class _CountdownCardState extends State<CountdownCard> {
 
   @override
   Widget build(BuildContext context) {
-    String countdown = getDateCountdown();
     final theme = Theme.of(context);
+    Card topInfoCard = _generateTopInfoCard(theme);
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 5, 16, 5),
+      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
           openBottomMenu();
         },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Column(
           children: [
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: countdown.contains('Ago')
-                    ? Text(countdown,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22,
-                            color: theme.hintColor))
-                    : Text(countdown,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 24,
-                            color: theme.colorScheme.primary)),
+            topInfoCard,
+            ListTile(
+              visualDensity: VisualDensity.compact,
+              leading: Icon(
+                Icons.notes_outlined,
+              ),
+              title: Text(
+                widget.countdown.note!,
               ),
             ),
-            Container(
-                height: 80,
-                child: VerticalDivider(
-                  thickness: 1,
-                )),
-            Flexible(
-              flex: 2,
-              child: Column(
-                children: [
-                  ListTile(
-                    contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    leading: Icon(
-                      Icons.notes_outlined,
-                    ),
-                    title: Text(
-                      widget.countdown.note!,
-                    ),
-                  ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    leading: Icon(
-                      Icons.calendar_today_outlined,
-                    ),
-                    title: Text(
-                      widget.countdown.date!,
-                    ),
-                  ),
-                ],
+            ListTile(
+              visualDensity: VisualDensity.compact,
+              leading: Icon(
+                Icons.today_outlined,
+              ),
+              title: Text(
+                widget.countdown.getDateFormatted(),
               ),
             ),
           ],

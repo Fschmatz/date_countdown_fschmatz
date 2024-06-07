@@ -1,5 +1,6 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
+import 'package:date_countdown_fschmatz/service/countdown_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,7 @@ class EditCountdown extends StatefulWidget {
 }
 
 class _EditCountdownState extends State<EditCountdown> {
-  final dbCountDown = CountdownDao.instance;
+  CountdownService countdownService = CountdownService.instance;
   late DateTime dateSelected;
   late DateTime dateSelectedComplete;
   bool _validNote = true;
@@ -27,24 +28,17 @@ class _EditCountdownState extends State<EditCountdown> {
     super.initState();
 
     controllerNote.text = widget.countdown.note!;
-    dateSelectedComplete = DateTime.parse(widget.countdown.completeDate!);
-    dateSelected = DateFormat('dd/MM/yyyy').parse(widget.countdown.date!);
+    dateSelectedComplete = widget.countdown.date!;
+    dateSelected = widget.countdown.date!;
     controllerDate.text = DateFormat('dd/MM/yyyy').format(dateSelected);
   }
 
-  String getSelectedDateFormatted() {
-    return DateFormat('dd/MM/yyyy').format(dateSelected);
-  }
+  Future<void> _update() async {
+    Countdown toUpdate = widget.countdown;
+    toUpdate.date = dateSelected;
+    toUpdate.note = controllerNote.text;
 
-  Future<void> _updateDayNote() async {
-    Map<String, dynamic> row = {
-      CountdownDao.columnId: widget.countdown.id,
-      CountdownDao.columnDate: getSelectedDateFormatted().toString(),
-      CountdownDao.columnCompleteDate: dateSelectedComplete.toString(),
-      CountdownDao.columnNote: controllerNote.text,
-    };
-
-    await dbCountDown.update(row);
+    await countdownService.update(toUpdate);
   }
 
   bool _validateBeforeStore() {
@@ -82,7 +76,6 @@ class _EditCountdownState extends State<EditCountdown> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Edit"),
@@ -125,7 +118,7 @@ class _EditCountdownState extends State<EditCountdown> {
             child: FilledButton.icon(
                 onPressed: () {
                   if (_validateBeforeStore()) {
-                    _updateDayNote();
+                    _update();
                     Navigator.of(context).pop();
                   } else {
                     setState(() {
