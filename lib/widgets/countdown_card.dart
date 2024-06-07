@@ -55,23 +55,29 @@ class _CountdownCardState extends State<CountdownCard> {
   }
 
   Card _generateTopInfoCard(ThemeData theme) {
-    Color backgroundColor = Colors.grey;
-    Color textColor = Colors.white12;
+    //isFuture
+    Color backgroundColor = theme.colorScheme.primaryContainer;
+    Color textColor = theme.colorScheme.onPrimaryContainer;
 
     if (isPast) {
       backgroundColor = theme.colorScheme.surfaceVariant;
       textColor = theme.colorScheme.onSurfaceVariant;
     } else if (isToday) {
-      backgroundColor = theme.colorScheme.primaryContainer;
-      textColor = theme.colorScheme.primary;
-    } else if (isFuture) {
-      backgroundColor = theme.colorScheme.secondaryContainer;
-      textColor = theme.colorScheme.secondary;
+      backgroundColor = theme.colorScheme.tertiaryContainer;
+      textColor = theme.colorScheme.onTertiaryContainer;
     }
 
     return Card(
         color: backgroundColor,
-        child: ListTile(title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor))));
+        child: ListTile(
+          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor)),
+          trailing: isToday
+              ? Icon(
+                  Icons.event_available_outlined,
+                  color: textColor,
+                )
+              : null,
+        ));
   }
 
   showAlertDialogOkDelete(BuildContext context) {

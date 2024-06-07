@@ -109,7 +109,7 @@ class _EditCountdownState extends State<EditCountdown> {
                         chooseDate();
                       },
                       icon: const Icon(
-                        Icons.calendar_today_outlined,
+                        Icons.today_outlined,
                       ))),
             ),
           ),
