@@ -50,14 +50,14 @@ class _CountdownCardState extends State<CountdownCard> {
       if (differenceInDays == 1)
         comparisonResult = "Tomorrow";
       else
-        comparisonResult = "In " + differenceInDays.toString() + " Days";
+        comparisonResult = differenceInDays.toString() + " Days";
     }
 
     return comparisonResult;
   }
 
   Card _generateTopInfoCard(ThemeData theme) {
-    TextStyle dateStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
+    TextStyle dateStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
     //isFuture
     Color backgroundColor = theme.colorScheme.primaryContainer;
     Color textColor = theme.colorScheme.onPrimaryContainer;
@@ -76,7 +76,7 @@ class _CountdownCardState extends State<CountdownCard> {
         color: backgroundColor,
         child: ListTile(
           dense: true,
-          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
+          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor)),
           trailing: isToday
               ? Icon(
                   Icons.event_available_outlined,
