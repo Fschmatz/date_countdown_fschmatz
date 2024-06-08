@@ -1,6 +1,8 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import 'package:date_countdown_fschmatz/pages/edit_countdown.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jiffy/jiffy.dart';
 import '../service/countdown_service.dart';
 
@@ -55,6 +57,7 @@ class _CountdownCardState extends State<CountdownCard> {
   }
 
   Card _generateTopInfoCard(ThemeData theme) {
+    TextStyle dateStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
     //isFuture
     Color backgroundColor = theme.colorScheme.primaryContainer;
     Color textColor = theme.colorScheme.onPrimaryContainer;
@@ -68,15 +71,19 @@ class _CountdownCardState extends State<CountdownCard> {
     }
 
     return Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
         color: backgroundColor,
         child: ListTile(
-          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor)),
+          dense: true,
+          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
           trailing: isToday
               ? Icon(
                   Icons.event_available_outlined,
                   color: textColor,
                 )
               : null,
+          subtitle: Text(widget.countdown.getDateFormatted(), style: dateStyle),
         ));
   }
 
@@ -132,6 +139,24 @@ class _CountdownCardState extends State<CountdownCard> {
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(
+                      Icons.notes_outlined,
+                    ),
+                    title: Text(
+                      widget.countdown.note!,
+                    ),
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(
+                      Icons.today_outlined,
+                    ),
+                    title: Text(
+                      widget.countdown.getDateFormatted(),
+                    ),
+                  ),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.edit_outlined),
@@ -169,35 +194,27 @@ class _CountdownCardState extends State<CountdownCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Card topInfoCard = _generateTopInfoCard(theme);
+    TextStyle noteStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.w400);
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
           openBottomMenu();
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             topInfoCard,
-            ListTile(
-              visualDensity: VisualDensity.compact,
-              leading: Icon(
-                Icons.notes_outlined,
-              ),
-              title: Text(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),
+              child: Text(
                 widget.countdown.note!,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: noteStyle,
               ),
-            ),
-            ListTile(
-              visualDensity: VisualDensity.compact,
-              leading: Icon(
-                Icons.today_outlined,
-              ),
-              title: Text(
-                widget.countdown.getDateFormatted(),
-              ),
-            ),
+            )
           ],
         ),
       ),

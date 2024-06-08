@@ -41,6 +41,17 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
               icon: Icon(
+                Icons.add_outlined,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => NewCountdown(),
+                    )).then((value) => loadCountdowns());
+              }),
+          IconButton(
+              icon: Icon(
                 Icons.settings_outlined,
               ),
               onPressed: () {
@@ -60,33 +71,23 @@ class _HomeState extends State<Home> {
             : ListView(
                 physics: AlwaysScrollableScrollPhysics(),
                 children: [
-                  ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) => const SizedBox(
-                            height: 4,
-                          ),
-                      shrinkWrap: true,
-                      itemCount: _countdownList.length,
-                      itemBuilder: (context, index) {
-                        Countdown countdown = _countdownList[index];
-
-                        return CountdownCard(key: UniqueKey(), countdown: countdown, refreshHome: loadCountdowns);
-                      }),
+                  GridView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 150, crossAxisCount: 2, mainAxisSpacing: 2, crossAxisSpacing: 2),
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _countdownList.length,
+                    itemBuilder: (context, index) {
+                      Countdown countdown = _countdownList[index];
+                      return CountdownCard(key: UniqueKey(), countdown: countdown, refreshHome: loadCountdowns);
+                    },
+                  ),
                   const SizedBox(
                     height: 100,
                   )
                 ],
               ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => NewCountdown(),
-              )).then((value) => loadCountdowns());
-        },
-        child: Icon(Icons.add_outlined),
       ),
     );
   }
