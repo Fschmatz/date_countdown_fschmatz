@@ -15,6 +15,10 @@ class CountdownService {
     return resp.isNotEmpty ? resp.map((map) => Countdown.fromMap(map)).toList() : [];
   }
 
+  Future<List<Map<String, dynamic>>>  queryAllRowsDescForBackup() async {
+    return await dbCountDown.queryAllRowsDesc();
+  }
+
   Future<List<Countdown>> queryAllRowsOrderByDateAsc() async {
     var resp = await dbCountDown.queryAllRowsOrderByDateAsc();
 
@@ -47,4 +51,17 @@ class CountdownService {
 
     await dbCountDown.insert(row);
   }
+
+  Future<void> deleteAll() async {
+    await dbCountDown.deleteAll();
+  }
+
+  Future<void> insertAllFromRestoreBackup(List<dynamic> jsonData) async {
+    List<Map<String, dynamic>> listToInsert = jsonData.map((item) {
+      return Countdown.fromMap(item).toMap();
+    }).toList();
+
+    await dbCountDown.insertBatchForBackup(listToInsert);
+  }
+
 }

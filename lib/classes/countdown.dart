@@ -17,6 +17,15 @@ class Countdown{
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'date': date?.toIso8601String(),
+      'note': note,
+      'createdAt': createdAt?.toIso8601String(),
+    };
+  }
+
   String getDateFormatted() {
     return DateFormat('dd/MM/yyyy').format(date!);
   }

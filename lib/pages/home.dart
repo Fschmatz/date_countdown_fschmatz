@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => SettingsPage(),
+                      builder: (BuildContext context) => SettingsPage(loadCountdowns: loadCountdowns),
                     ));
               }),
         ],
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
                   GridView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 150, crossAxisCount: 2, mainAxisSpacing: 2, crossAxisSpacing: 2),
+                        mainAxisExtent: 125, crossAxisCount: 2, mainAxisSpacing: 2, crossAxisSpacing: 2),
                     physics: const ScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: _countdownList.length,

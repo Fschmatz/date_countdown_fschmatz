@@ -58,16 +58,31 @@ class _CountdownCardState extends State<CountdownCard> {
 
   Card _generateTopInfoCard(ThemeData theme) {
     TextStyle dateStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
-    //isFuture
-    Color backgroundColor = theme.colorScheme.primaryContainer;
+    Color backgroundColor = Colors.transparent;
     Color textColor = theme.colorScheme.onPrimaryContainer;
+    Icon? icon;
 
     if (isPast) {
       backgroundColor = theme.colorScheme.surfaceVariant;
       textColor = theme.colorScheme.onSurfaceVariant;
+      icon = Icon(
+        Icons.event_available_outlined,
+        color: textColor,
+      );
     } else if (isToday) {
       backgroundColor = theme.colorScheme.tertiaryContainer;
       textColor = theme.colorScheme.onTertiaryContainer;
+      icon = Icon(
+        Icons.today,
+        color: textColor,
+      );
+    } else if (differenceInDays <= 10) {
+      backgroundColor = theme.colorScheme.primaryContainer;
+      textColor = theme.colorScheme.onPrimaryContainer;
+      icon = Icon(
+        Icons.priority_high_outlined,
+        color: textColor,
+      );
     }
 
     return Card(
@@ -75,14 +90,11 @@ class _CountdownCardState extends State<CountdownCard> {
         margin: EdgeInsets.zero,
         color: backgroundColor,
         child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 12),
           dense: true,
-          title: Text(_generateCountdownText(), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: textColor)),
-          trailing: isToday
-              ? Icon(
-                  Icons.event_available_outlined,
-                  color: textColor,
-                )
-              : null,
+          title: Text(_generateCountdownText(), maxLines: 1,
+              overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
+          trailing: icon,
           subtitle: Text(widget.countdown.getDateFormatted(), style: dateStyle),
         ));
   }
@@ -194,7 +206,7 @@ class _CountdownCardState extends State<CountdownCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Card topInfoCard = _generateTopInfoCard(theme);
-    TextStyle noteStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.w400);
+    TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
 
     return Card(
       child: InkWell(
@@ -207,10 +219,10 @@ class _CountdownCardState extends State<CountdownCard> {
           children: [
             topInfoCard,
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               child: Text(
                 widget.countdown.note!,
-                maxLines: 3,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: noteStyle,
               ),

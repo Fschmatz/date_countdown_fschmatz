@@ -1,20 +1,26 @@
 class AppDetails{
 
-  static String appVersion = "2.1.1";
+  static String appVersion = "2.2.0";
   static String appName = "Date Countdown Fschmatz";
   static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
+  static String backupFileName = "date_countdown_backup";
 
   static String changelogCurrent = '''
+2.2.0
+- Add backup
+- UI changes
+- Small fixes
+''';
+
+  static String changelogsOld = '''
 2.1.1
 - DB changes
 - Added grid
 - Removed FAB
 - UI changes
 - Small fixes
-''';
 
-  static String changelogsOld = '''
 2.0.1
 - Monet
 - UI changes

@@ -79,4 +79,23 @@ class CountdownDao {
     return await db.rawQuery('SELECT * FROM $table ORDER BY date ');
   }
 
+  Future<int> deleteAll() async {
+    Database db = await instance.database;
+    return await db.delete(table);
+  }
+
+  Future<void> insertBatchForBackup(List<Map<String, dynamic>> list) async {
+    Database db = await instance.database;
+
+    await db.transaction((txn) async {
+      final batch = txn.batch();
+
+      for (final data in list) {
+        batch.insert(table, data);
+      }
+
+      await batch.commit(noResult: true);
+    });
+  }
+
 }

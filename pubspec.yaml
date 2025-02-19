@@ -1,7 +1,7 @@
 name: date_countdown_fschmatz
 description: Days counter to an specified date
 publish_to: 'none'
-version: 2.1.1
+version: 2.2.0
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
@@ -19,6 +19,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   dynamic_color: ^1.7.0
   jiffy: ^6.3.1
+  permission_handler: ^11.3.0
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
