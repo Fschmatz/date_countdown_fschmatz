@@ -1,12 +1,10 @@
+import 'package:date_countdown_fschmatz/service/store_service.dart';
 import 'package:flutter/material.dart';
+
 import '../classes/countdown.dart';
 import '../db/countdown_dao.dart';
 
-class CountdownService {
-
-  CountdownService._privateConstructor();
-  static final CountdownService instance = CountdownService._privateConstructor();
-
+class CountdownService extends StoreService {
   final dbCountDown = CountdownDao.instance;
 
   Future<List<Countdown>> queryAllRowsDesc() async {
@@ -15,7 +13,7 @@ class CountdownService {
     return resp.isNotEmpty ? resp.map((map) => Countdown.fromMap(map)).toList() : [];
   }
 
-  Future<List<Map<String, dynamic>>>  queryAllRowsDescForBackup() async {
+  Future<List<Map<String, dynamic>>> queryAllRowsDescForBackup() async {
     return await dbCountDown.queryAllRowsDesc();
   }
 
@@ -27,6 +25,7 @@ class CountdownService {
 
   Future<void> delete(int id) async {
     await dbCountDown.delete(id);
+    await loadCountdowns();
   }
 
   Future<void> update(Countdown countdown) async {
@@ -38,6 +37,7 @@ class CountdownService {
     };
 
     await dbCountDown.update(row);
+    await loadCountdowns();
   }
 
   Future<void> insert(Countdown countdown) async {
@@ -50,6 +50,7 @@ class CountdownService {
     };
 
     await dbCountDown.insert(row);
+    await loadCountdowns();
   }
 
   Future<void> deleteAll() async {
@@ -62,6 +63,6 @@ class CountdownService {
     }).toList();
 
     await dbCountDown.insertBatchForBackup(listToInsert);
+    await loadCountdowns();
   }
-
 }

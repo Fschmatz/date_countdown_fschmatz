@@ -1,53 +1,51 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/db/countdown_dao.dart';
 import 'package:date_countdown_fschmatz/service/countdown_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class EditCountdown extends StatefulWidget {
-  Countdown countdown;
+  @override
+  State<EditCountdown> createState() => _EditCountdownState();
+
+  final Countdown countdown;
 
   EditCountdown({Key? key, required this.countdown}) : super(key: key);
-
-  @override
-  _EditCountdownState createState() => _EditCountdownState();
 }
 
 class _EditCountdownState extends State<EditCountdown> {
-  CountdownService countdownService = CountdownService.instance;
-  late DateTime dateSelected;
-  late DateTime dateSelectedComplete;
+  late DateTime _dateSelected;
+  late DateTime _dateSelectedComplete;
   bool _validNote = true;
   bool _validDate = true;
-  TextEditingController controllerNote = TextEditingController();
-  TextEditingController controllerDate = TextEditingController();
+  TextEditingController _controllerNote = TextEditingController();
+  TextEditingController _controllerDate = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    controllerNote.text = widget.countdown.note!;
-    dateSelectedComplete = widget.countdown.date!;
-    dateSelected = widget.countdown.date!;
-    controllerDate.text = DateFormat('dd/MM/yyyy').format(dateSelected);
+    _controllerNote.text = widget.countdown.note!;
+    _dateSelectedComplete = widget.countdown.date!;
+    _dateSelected = widget.countdown.date!;
+    _controllerDate.text = DateFormat('dd/MM/yyyy').format(_dateSelected);
   }
 
   Future<void> _update() async {
     Countdown toUpdate = widget.countdown;
-    toUpdate.date = dateSelected;
-    toUpdate.note = controllerNote.text;
+    toUpdate.date = _dateSelected;
+    toUpdate.note = _controllerNote.text;
 
-    await countdownService.update(toUpdate);
+    await CountdownService().update(toUpdate);
   }
 
   bool _validateBeforeStore() {
     bool ok = true;
-    if (controllerNote.text.isEmpty) {
+    if (_controllerNote.text.isEmpty) {
       ok = false;
       _validNote = false;
     }
-    if (controllerDate.text.isEmpty) {
+    if (_controllerDate.text.isEmpty) {
       ok = false;
       _validDate = false;
     }
@@ -67,9 +65,9 @@ class _EditCountdownState extends State<EditCountdown> {
 
     if (data != null) {
       setState(() {
-        dateSelected = data;
-        dateSelectedComplete = data;
-        controllerDate.text = DateFormat('dd/MM/yyyy').format(dateSelected);
+        _dateSelected = data;
+        _dateSelectedComplete = data;
+        _controllerDate.text = DateFormat('dd/MM/yyyy').format(_dateSelected);
       });
     }
   }
@@ -89,7 +87,7 @@ class _EditCountdownState extends State<EditCountdown> {
               maxLength: 200,
               textCapitalization: TextCapitalization.sentences,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              controller: controllerNote,
+              controller: _controllerNote,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(), labelText: "Note", helperText: "* Required", errorText: _validNote ? null : "Note is empty"),
             ),
@@ -98,7 +96,7 @@ class _EditCountdownState extends State<EditCountdown> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: TextField(
               readOnly: true,
-              controller: controllerDate,
+              controller: _controllerDate,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: "Date",

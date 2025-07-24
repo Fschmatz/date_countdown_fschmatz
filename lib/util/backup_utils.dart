@@ -1,23 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import '../service/countdown_service.dart';
 
 class BackupUtils {
-
-  CountdownService countdownService = CountdownService.instance;
-
-  Future<List<Map<String, dynamic>>> _loadAll() async  {
-    return countdownService.queryAllRowsDescForBackup();
+  Future<List<Map<String, dynamic>>> _loadAll() async {
+    return CountdownService().queryAllRowsDescForBackup();
   }
 
-  Future<void> _deleteAll()  async {
-    await countdownService.deleteAll();
+  Future<void> _deleteAll() async {
+    await CountdownService().deleteAll();
   }
 
-  Future<void> _insertAll(List<dynamic> jsonData)  async {
-   await countdownService.insertAllFromRestoreBackup(jsonData);
+  Future<void> _insertAll(List<dynamic> jsonData) async {
+    await CountdownService().insertAllFromRestoreBackup(jsonData);
   }
 
   Future<void> _loadStoragePermission() async {
@@ -29,7 +28,7 @@ class BackupUtils {
   }
 
   // Always using Android Download folder
-  Future<String> _loadDirectory()  async {
+  Future<String> _loadDirectory() async {
     bool dirDownloadExists = true;
     String directory = "/storage/emulated/0/Download/";
 
@@ -49,7 +48,7 @@ class BackupUtils {
     List<Map<String, dynamic>> list = await _loadAll();
 
     if (list.isNotEmpty) {
-      await _saveListAsJson(list,fileName);
+      await _saveListAsJson(list, fileName);
 
       Fluttertoast.showToast(
         msg: "Backup completed!",
@@ -75,8 +74,8 @@ class BackupUtils {
     }
   }
 
- Future<void> restoreBackupData(String fileName) async {
-   await _loadStoragePermission();
+  Future<void> restoreBackupData(String fileName) async {
+    await _loadStoragePermission();
 
     try {
       String directory = await _loadDirectory();
@@ -97,5 +96,4 @@ class BackupUtils {
       );
     }
   }
-
 }

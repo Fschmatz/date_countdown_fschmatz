@@ -1,27 +1,24 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import 'package:date_countdown_fschmatz/pages/edit_countdown.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jiffy/jiffy.dart';
+
 import '../service/countdown_service.dart';
 
 class CountdownCard extends StatefulWidget {
   @override
-  _CountdownCardState createState() => _CountdownCardState();
+  State<CountdownCard> createState() => _CountdownCardState();
 
-  Countdown countdown;
-  Function() refreshHome;
+  final Countdown countdown;
 
-  CountdownCard({Key? key, required this.countdown, required this.refreshHome}) : super(key: key);
+  CountdownCard({Key? key, required this.countdown}) : super(key: key);
 }
 
 class _CountdownCardState extends State<CountdownCard> {
-  CountdownService countdownService = CountdownService.instance;
-  bool isPast = false;
-  bool isToday = false;
-  bool isFuture = false;
-  int differenceInDays = 0;
+  bool _isPast = false;
+  bool _isToday = false;
+  bool _isFuture = false;
+  int _differenceInDays = 0;
 
   @override
   void initState() {
@@ -34,51 +31,50 @@ class _CountdownCardState extends State<CountdownCard> {
     Jiffy today = Jiffy.now();
     Jiffy date = Jiffy.parseFromDateTime(widget.countdown.date!);
 
-    differenceInDays = Jiffy.parseFromDateTime(widget.countdown.date!).diff(today, unit: Unit.day).round().abs() + 1;
-    isPast = date.isBefore(today, unit: Unit.day);
-    isToday = date.isSame(today, unit: Unit.day);
-    isFuture = date.isAfter(today, unit: Unit.day);
+    _differenceInDays = Jiffy.parseFromDateTime(widget.countdown.date!).diff(today, unit: Unit.day).round().abs() + 1;
+    _isPast = date.isBefore(today, unit: Unit.day);
+    _isToday = date.isSame(today, unit: Unit.day);
+    _isFuture = date.isAfter(today, unit: Unit.day);
   }
 
   String _generateCountdownText() {
     String comparisonResult = "";
-    if (isPast) {
-      comparisonResult = differenceInDays.toString() + " Days Ago";
-    } else if (isToday) {
+    if (_isPast) {
+      comparisonResult = _differenceInDays.toString() + " Days Ago";
+    } else if (_isToday) {
       comparisonResult = "Today";
-    } else if (isFuture) {
-      if (differenceInDays == 1)
+    } else if (_isFuture) {
+      if (_differenceInDays == 1)
         comparisonResult = "Tomorrow";
       else
-        comparisonResult = differenceInDays.toString() + " Days";
+        comparisonResult = _differenceInDays.toString() + " Days";
     }
 
     return comparisonResult;
   }
 
-  Card _generateTopInfoCard(ThemeData theme) {
-    TextStyle dateStyle = TextStyle(fontSize: 10, fontWeight: FontWeight.w700);
-    Color backgroundColor = Colors.transparent;
-    Color textColor = theme.colorScheme.onPrimaryContainer;
+  Card _generateTopInfoCard(ColorScheme colorScheme) {
+    Color backgroundColor = colorScheme.surfaceContainerHighest;
+    Color textColor = colorScheme.onSurface;
     Icon? icon;
 
-    if (isPast) {
-      backgroundColor = theme.colorScheme.surfaceVariant;
-      textColor = theme.colorScheme.onSurfaceVariant;
+    if (_isPast) {
+      backgroundColor = Colors.transparent;
+      textColor = colorScheme.onSurface;
       icon = Icon(
         Icons.event_available_outlined,
         color: textColor,
       );
-    } else if (isToday) {
-      backgroundColor = theme.colorScheme.tertiaryContainer;
-      textColor = theme.colorScheme.onTertiaryContainer;
+    } else if (_isToday) {
+      backgroundColor = colorScheme.tertiary;
+      textColor = colorScheme.onTertiary;
       icon = Icon(
         Icons.today,
         color: textColor,
       );
-    } else if (differenceInDays <= 10) {
-      backgroundColor = theme.colorScheme.primaryContainer;
-      textColor = theme.colorScheme.onPrimaryContainer;
+    } else if (_differenceInDays <= 10) {
+      backgroundColor = colorScheme.primary;
+      textColor = colorScheme.onPrimary;
       icon = Icon(
         Icons.priority_high_outlined,
         color: textColor,
@@ -92,10 +88,10 @@ class _CountdownCardState extends State<CountdownCard> {
         child: ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 12),
           dense: true,
-          title: Text(_generateCountdownText(), maxLines: 1,
-              overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
+          title: Text(_generateCountdownText(),
+              maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
           trailing: icon,
-          subtitle: Text(widget.countdown.getDateFormatted(), style: dateStyle),
+          subtitle: Text(widget.countdown.getDateFormatted(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: textColor)),
         ));
   }
 
@@ -105,8 +101,8 @@ class _CountdownCardState extends State<CountdownCard> {
         "Yes",
       ),
       onPressed: () async {
-        await countdownService.delete(widget.countdown.id!);
-        widget.refreshHome();
+        await CountdownService().delete(widget.countdown.id!);
+
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       },
@@ -183,7 +179,7 @@ class _CountdownCardState extends State<CountdownCard> {
                             builder: (BuildContext context) => EditCountdown(
                               countdown: widget.countdown,
                             ),
-                          )).then((value) => widget.refreshHome());
+                          ));
                     },
                   ),
                   ListTile(
@@ -204,8 +200,7 @@ class _CountdownCardState extends State<CountdownCard> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    Card topInfoCard = _generateTopInfoCard(theme);
+    Card topInfoCard = _generateTopInfoCard(Theme.of(context).colorScheme);
     TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
 
     return Card(

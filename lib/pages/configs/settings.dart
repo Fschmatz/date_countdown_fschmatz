@@ -1,6 +1,7 @@
 import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
+
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_print.dart';
 import '../../util/dialog_select_theme.dart';
@@ -9,11 +10,9 @@ import 'changelog.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 
-  final Function()? loadCountdowns;
-
-  SettingsPage({Key? key, this.loadCountdowns}) : super(key: key);
+  SettingsPage({Key? key}) : super(key: key);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -79,10 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () => showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return DialogBackup(
-                      isCreateBackup: true,
-                      reloadHomeFunction: widget.loadCountdowns,
-                    );
+                    return DialogBackup(isCreateBackup: true);
                   }),
               leading: const Icon(Icons.save_outlined),
               title: const Text(
@@ -95,7 +91,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (BuildContext context) {
                     return DialogBackup(
                       isCreateBackup: false,
-                      reloadHomeFunction: widget.loadCountdowns,
                     );
                   }),
               leading: const Icon(Icons.settings_backup_restore_outlined),

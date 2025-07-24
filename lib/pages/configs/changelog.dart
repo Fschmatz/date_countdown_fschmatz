@@ -11,31 +11,16 @@ class ChangelogPage extends StatelessWidget {
           title: Text("Changelog"),
         ),
         body: ListView(children: <Widget>[
+          ListTile(title: Text("Current Version", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText))),
           ListTile(
-              title: Text("Current Version",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: themeColorText))),
-          ListTile(
-            leading: Icon(
-              Icons.article_outlined,
-            ),
             title: Text(
               AppDetails.changelogCurrent,
             ),
           ),
           ListTile(
-            title: Text("Previous Versions",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: themeColorText)),
+            title: Text("Previous Versions", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
           ),
           ListTile(
-            leading: Icon(
-              Icons.article_outlined,
-            ),
             title: Text(
               AppDetails.changelogsOld,
             ),
