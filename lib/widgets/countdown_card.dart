@@ -54,26 +54,21 @@ class _CountdownCardState extends State<CountdownCard> {
     return comparisonResult;
   }
 
-  Card _generateTopInfoCard(ColorScheme colorScheme) {
-    Color backgroundColor = _getCardColor(colorScheme);
-    Color textColor = _getCardTextColor(colorScheme);
-    Icon? icon = _getCardIcon(textColor);
+  ListTile _generateTopInfoListTile(ColorScheme colorScheme) {
+    Color textColor = _getTextColor(colorScheme);
+    Icon? icon = _getIcon(textColor);
 
-    return Card(
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        color: backgroundColor,
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 12),
-          dense: true,
-          title: Text(_generateCountdownText(),
-              maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
-          trailing: icon,
-          subtitle: Text(widget.countdown.getDateFormatted(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: textColor)),
-        ));
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+      dense: true,
+      title: Text(_generateCountdownText(),
+          maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: textColor)),
+      trailing: icon,
+      subtitle: Text(widget.countdown.getDateFormatted(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: textColor)),
+    );
   }
 
-  Color _getCardColor(ColorScheme colorScheme) {
+  Color _getBackgroundColor(ColorScheme colorScheme) {
     Color backgroundColor = colorScheme.surfaceContainerHighest;
 
     if (_isPast) {
@@ -87,7 +82,7 @@ class _CountdownCardState extends State<CountdownCard> {
     return backgroundColor;
   }
 
-  Color _getCardTextColor(ColorScheme colorScheme) {
+  Color _getTextColor(ColorScheme colorScheme) {
     Color textColor = colorScheme.onSurface;
 
     if (_isToday) {
@@ -99,7 +94,7 @@ class _CountdownCardState extends State<CountdownCard> {
     return textColor;
   }
 
-  Icon _getCardIcon(Color color) {
+  Icon _getIcon(Color color) {
     Icon? icon = Icon(
       Icons.hourglass_top_outlined,
       color: color,
@@ -231,12 +226,12 @@ class _CountdownCardState extends State<CountdownCard> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme = Theme.of(context).colorScheme;
-    Card topInfoCard = _generateTopInfoCard(ColorScheme);
-    TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getCardTextColor(ColorScheme));
-    Color cardBottomColor = _getCardColor(Theme.of(context).colorScheme);
+    ListTile topInfoListTile = _generateTopInfoListTile(ColorScheme);
+    TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getTextColor(ColorScheme));
+    Color backgroundColor = _getBackgroundColor(Theme.of(context).colorScheme);
 
     return Card(
-      color: cardBottomColor,
+      color: backgroundColor,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
@@ -245,9 +240,9 @@ class _CountdownCardState extends State<CountdownCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            topInfoCard,
+            topInfoListTile,
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
               child: Text(
                 widget.countdown.note!,
                 maxLines: 2,
