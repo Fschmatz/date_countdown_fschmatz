@@ -19,6 +19,7 @@ class _CountdownCardState extends State<CountdownCard> {
   bool _isToday = false;
   bool _isFuture = false;
   int _differenceInDays = 0;
+  int _daysComingSoon = 15;
 
   @override
   void initState() {
@@ -54,32 +55,9 @@ class _CountdownCardState extends State<CountdownCard> {
   }
 
   Card _generateTopInfoCard(ColorScheme colorScheme) {
-    Color backgroundColor = colorScheme.surfaceContainerHighest;
-    Color textColor = colorScheme.onSurface;
-    Icon? icon;
-
-    if (_isPast) {
-      backgroundColor = Colors.transparent;
-      textColor = colorScheme.onSurface;
-      icon = Icon(
-        Icons.event_available_outlined,
-        color: textColor,
-      );
-    } else if (_isToday) {
-      backgroundColor = colorScheme.tertiary;
-      textColor = colorScheme.onTertiary;
-      icon = Icon(
-        Icons.today,
-        color: textColor,
-      );
-    } else if (_differenceInDays <= 10) {
-      backgroundColor = colorScheme.primary;
-      textColor = colorScheme.onPrimary;
-      icon = Icon(
-        Icons.priority_high_outlined,
-        color: textColor,
-      );
-    }
+    Color backgroundColor = _getCardColor(colorScheme);
+    Color textColor = _getCardTextColor(colorScheme);
+    Icon? icon = _getCardIcon(textColor);
 
     return Card(
         elevation: 0,
@@ -93,6 +71,58 @@ class _CountdownCardState extends State<CountdownCard> {
           trailing: icon,
           subtitle: Text(widget.countdown.getDateFormatted(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: textColor)),
         ));
+  }
+
+  Color _getCardColor(ColorScheme colorScheme) {
+    Color backgroundColor = colorScheme.surfaceContainerHighest;
+
+    if (_isPast) {
+      backgroundColor = colorScheme.surfaceContainerHigh;
+    } else if (_isToday) {
+      backgroundColor = colorScheme.tertiary;
+    } else if (_differenceInDays <= _daysComingSoon) {
+      backgroundColor = colorScheme.primary;
+    }
+
+    return backgroundColor;
+  }
+
+  Color _getCardTextColor(ColorScheme colorScheme) {
+    Color textColor = colorScheme.onSurface;
+
+    if (_isToday) {
+      textColor = colorScheme.onTertiary;
+    } else if (_differenceInDays <= _daysComingSoon) {
+      textColor = colorScheme.onPrimary;
+    }
+
+    return textColor;
+  }
+
+  Icon _getCardIcon(Color color) {
+    Icon? icon = Icon(
+      Icons.hourglass_top_outlined,
+      color: color,
+    );
+
+    if (_isPast) {
+      icon = Icon(
+        Icons.event_available_outlined,
+        color: color,
+      );
+    } else if (_isToday) {
+      icon = Icon(
+        Icons.today,
+        color: color,
+      );
+    } else if (_differenceInDays <= _daysComingSoon) {
+      icon = Icon(
+        Icons.priority_high_outlined,
+        color: color,
+      );
+    }
+
+    return icon;
   }
 
   showAlertDialogOkDelete(BuildContext context) {
@@ -200,10 +230,13 @@ class _CountdownCardState extends State<CountdownCard> {
 
   @override
   Widget build(BuildContext context) {
-    Card topInfoCard = _generateTopInfoCard(Theme.of(context).colorScheme);
-    TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
+    final ColorScheme = Theme.of(context).colorScheme;
+    Card topInfoCard = _generateTopInfoCard(ColorScheme);
+    TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getCardTextColor(ColorScheme));
+    Color cardBottomColor = _getCardColor(Theme.of(context).colorScheme);
 
     return Card(
+      color: cardBottomColor,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {

@@ -1,10 +1,10 @@
 import 'dart:io';
+
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CountdownDao {
-
   static final _databaseName = 'DateCountdown.db';
   static final _databaseVersion = 1;
 
@@ -15,20 +15,18 @@ class CountdownDao {
   static final columnCreatedAt = 'createdAt';
 
   static Database? _database;
-  Future<Database> get database async =>
-      _database ??= await _initDatabase();
+
+  Future<Database> get database async => _database ??= await _initDatabase();
 
   CountdownDao._privateConstructor();
-  static final CountdownDao instance = CountdownDao._privateConstructor();
 
+  static final CountdownDao instance = CountdownDao._privateConstructor();
 
   // Open db and create if it not exists
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
-    return await openDatabase(path,
-        version: _databaseVersion,
-        onCreate: _onCreate);
+    return await openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
   }
 
   // SQL create DB
@@ -53,9 +51,9 @@ class CountdownDao {
     return await db.query(table);
   }
 
-  Future<List<Map<String, dynamic>>> queryAllRowsDesc() async {
+  Future<List<Map<String, dynamic>>> queryAllOrderByDateAsc() async {
     Database db = await instance.database;
-    return await db.rawQuery('SELECT * FROM $table ORDER BY id DESC');
+    return await db.rawQuery('SELECT * FROM $table ORDER BY $columnDate ASC');
   }
 
   Future<int> update(Map<String, dynamic> row) async {
@@ -97,5 +95,4 @@ class CountdownDao {
       await batch.commit(noResult: true);
     });
   }
-
 }

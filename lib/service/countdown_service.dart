@@ -8,13 +8,13 @@ class CountdownService extends StoreService {
   final dbCountDown = CountdownDao.instance;
 
   Future<List<Countdown>> queryAllRowsDesc() async {
-    var resp = await dbCountDown.queryAllRowsDesc();
+    var resp = await dbCountDown.queryAllOrderByDateAsc();
 
     return resp.isNotEmpty ? resp.map((map) => Countdown.fromMap(map)).toList() : [];
   }
 
   Future<List<Map<String, dynamic>>> queryAllRowsDescForBackup() async {
-    return await dbCountDown.queryAllRowsDesc();
+    return await dbCountDown.queryAllOrderByDateAsc();
   }
 
   Future<List<Countdown>> queryAllRowsOrderByDateAsc() async {
