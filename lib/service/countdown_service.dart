@@ -29,27 +29,16 @@ class CountdownService extends StoreService {
   }
 
   Future<void> update(Countdown countdown) async {
-    Map<String, dynamic> row = {
-      CountdownDao.columnId: countdown.id,
-      CountdownDao.columnDate: DateUtils.dateOnly(countdown.date!).toString(),
-      CountdownDao.columnNote: countdown.note,
-      CountdownDao.columnCreatedAt: DateUtils.dateOnly(countdown.createdAt!).toString()
-    };
-
-    await dbCountDown.update(row);
+    await dbCountDown.update(countdown.toMap());
     await loadCountdowns();
   }
 
   Future<void> insert(Countdown countdown) async {
-    DateUtils.dateOnly(DateTime.now());
+    Countdown countdownToInsert = countdown.copyWith(
+      createdAt: countdown.createdAt ?? DateUtils.dateOnly(DateTime.now()),
+    );
 
-    Map<String, dynamic> row = {
-      CountdownDao.columnDate: DateUtils.dateOnly(countdown.date!).toString(),
-      CountdownDao.columnNote: countdown.note,
-      CountdownDao.columnCreatedAt: DateUtils.dateOnly(DateTime.now()).toString(),
-    };
-
-    await dbCountDown.insert(row);
+    await dbCountDown.insert(countdownToInsert.toMap());
     await loadCountdowns();
   }
 

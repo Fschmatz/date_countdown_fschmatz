@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/pages/new_countdown.dart';
+import 'package:date_countdown_fschmatz/pages/store_countdown.dart';
 import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:date_countdown_fschmatz/widgets/countdown_card.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => NewCountdown(),
+                        builder: (BuildContext context) => StoreCountdown(),
                       ));
                 }),
             IconButton(

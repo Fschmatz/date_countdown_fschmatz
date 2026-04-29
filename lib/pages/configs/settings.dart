@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../util/dialog_backup.dart';
 import '../../util/dialog_print.dart';
 import '../../util/dialog_select_theme.dart';
+import '../../widgets/app_parameter_value.dart';
 import 'app_info.dart';
 import 'changelog.dart';
 
@@ -78,11 +79,21 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () => showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return DialogBackup(isCreateBackup: true);
+                    return DialogBackup(
+                      isCreateBackup: true,
+                    );
                   }),
               leading: const Icon(Icons.save_outlined),
               title: const Text(
                 "Backup now",
+              ),
+              subtitle: const Row(
+                children: [
+                  Text("Last backup: "),
+                  AppParameterValue(
+                    parameterKey: 'lastBackupDate',
+                  ),
+                ],
               ),
             ),
             ListTile(

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../service/app_parameter_service.dart';
 import '../service/countdown_service.dart';
 
 class BackupUtils {
@@ -17,6 +18,18 @@ class BackupUtils {
 
   Future<void> _insertAll(List<dynamic> jsonData) async {
     await CountdownService().insertAllFromRestoreBackup(jsonData);
+  }
+
+  Future<List<Map<String, dynamic>>> _loadAllParameters() async {
+    return AppParameterService().loadAllParameters();
+  }
+
+  Future<void> _deleteAllParameters() async {
+    await AppParameterService().deleteAllParameters();
+  }
+
+  Future<void> _insertParameters(List<dynamic> jsonData) async {
+    await AppParameterService().insertParametersFromRestoreBackup(jsonData);
   }
 
   Future<void> _loadStoragePermission() async {
@@ -44,11 +57,18 @@ class BackupUtils {
 
   Future<void> backupData(String fileName) async {
     await _loadStoragePermission();
+    await AppParameterService().saveLastBackupDate();
 
     List<Map<String, dynamic>> list = await _loadAll();
+    List<Map<String, dynamic>> listParameters = await _loadAllParameters();
 
     if (list.isNotEmpty) {
-      await _saveListAsJson(list, fileName);
+      Map<String, dynamic> combinedData = {
+        'countdowns': list,
+        'parameters': listParameters,
+      };
+
+      await _saveDataAsJson(combinedData, fileName);
 
       Fluttertoast.showToast(
         msg: "Backup completed!",
@@ -60,7 +80,7 @@ class BackupUtils {
     }
   }
 
-  Future<void> _saveListAsJson(List<Map<String, dynamic>> data, String fileName) async {
+  Future<void> _saveDataAsJson(Map<String, dynamic> data, String fileName) async {
     try {
       String directory = await _loadDirectory();
 
@@ -82,10 +102,24 @@ class BackupUtils {
 
       final file = File('$directory/$fileName.json');
       final jsonString = await file.readAsString();
-      final List<dynamic> jsonData = json.decode(jsonString);
+      final dynamic decodedJson = json.decode(jsonString);
 
-      await _deleteAll();
-      await _insertAll(jsonData);
+      if (decodedJson is List) {
+        // Old Backup (Countdowns Only)
+        await _deleteAll();
+        await _insertAll(decodedJson);
+      } else if (decodedJson is Map<String, dynamic>) {
+        // New Backup (Countdowns + Parameters)
+        if (decodedJson.containsKey('countdowns')) {
+          await _deleteAll();
+          await _insertAll(decodedJson['countdowns']);
+        }
+
+        if (decodedJson.containsKey('parameters')) {
+          await _deleteAllParameters();
+          await _insertParameters(decodedJson['parameters']);
+        }
+      }
 
       Fluttertoast.showToast(
         msg: "Success!",

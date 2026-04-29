@@ -5,4 +5,8 @@ abstract class StoreService {
   Future<void> loadCountdowns() async {
     await store.dispatch(LoadCountdownsAction());
   }
+
+  Future<void> loadAppParameters() async {
+    await store.dispatch(LoadAppParametersAction());
+  }
 }

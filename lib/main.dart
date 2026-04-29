@@ -13,6 +13,7 @@ final Store<AppState> store = Store<AppState>(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await store.dispatch(LoadAppParametersAction());
   await store.dispatch(LoadCountdownsAction());
 
   runApp(

@@ -1,5 +1,5 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/pages/edit_countdown.dart';
+import 'package:date_countdown_fschmatz/pages/store_countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -72,23 +72,25 @@ class _CountdownCardState extends State<CountdownCard> {
     Color backgroundColor = colorScheme.surfaceContainerHighest;
 
     if (_isPast) {
-      backgroundColor = colorScheme.surfaceContainerHigh;
+      backgroundColor = colorScheme.surfaceContainer;
     } else if (_isToday) {
-      backgroundColor = colorScheme.tertiary;
+      backgroundColor = colorScheme.tertiaryContainer;
     } else if (_differenceInDays <= _daysComingSoon) {
-      backgroundColor = colorScheme.primary;
+      backgroundColor = colorScheme.primaryContainer;
     }
 
     return backgroundColor;
   }
 
   Color _getTextColor(ColorScheme colorScheme) {
-    Color textColor = colorScheme.onSurface;
+    Color textColor = colorScheme.onPrimaryContainer;
 
-    if (_isToday) {
-      textColor = colorScheme.onTertiary;
+    if (_isPast) {
+      textColor = Theme.of(context).disabledColor;
+    } else if (_isToday) {
+      textColor = colorScheme.onTertiaryContainer;
     } else if (_differenceInDays <= _daysComingSoon) {
-      textColor = colorScheme.onPrimary;
+      textColor = colorScheme.onPrimaryContainer;
     }
 
     return textColor;
@@ -118,6 +120,20 @@ class _CountdownCardState extends State<CountdownCard> {
     }
 
     return icon;
+  }
+
+  double _getBorderRadius() {
+    double radius = 12;
+
+    if (_isPast) {
+      radius = 8;
+    } else if (_isToday) {
+      radius = 25;
+    } else if (_differenceInDays <= _daysComingSoon) {
+      radius = 12;
+    }
+
+    return radius;
   }
 
   showAlertDialogOkDelete(BuildContext context) {
@@ -155,6 +171,7 @@ class _CountdownCardState extends State<CountdownCard> {
   void openBottomMenu() {
     showModalBottomSheet(
         context: context,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         builder: (BuildContext bc) {
           return SafeArea(
             child: Padding(
@@ -201,7 +218,7 @@ class _CountdownCardState extends State<CountdownCard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => EditCountdown(
+                            builder: (BuildContext context) => StoreCountdown(
                               countdown: widget.countdown,
                             ),
                           ));
@@ -229,11 +246,15 @@ class _CountdownCardState extends State<CountdownCard> {
     ListTile topInfoListTile = _generateTopInfoListTile(ColorScheme);
     TextStyle noteStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getTextColor(ColorScheme));
     Color backgroundColor = _getBackgroundColor(Theme.of(context).colorScheme);
+    double borderRadius = _getBorderRadius();
 
     return Card(
       color: backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(borderRadius),
         onTap: () {
           openBottomMenu();
         },
