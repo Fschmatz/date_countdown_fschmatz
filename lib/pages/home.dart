@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
-import 'package:date_countdown_fschmatz/pages/store_countdown.dart';
 import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:date_countdown_fschmatz/widgets/countdown_card.dart';
+import 'package:date_countdown_fschmatz/widgets/store_countdown_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -34,11 +34,10 @@ class _HomeState extends State<Home> {
                   Icons.add_outlined,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => StoreCountdown(),
-                      ));
+                  showDialog(
+                    context: context,
+                    builder: (context) => const StoreCountdownDialog(),
+                  );
                 }),
             IconButton(
                 icon: Icon(
@@ -61,18 +60,21 @@ class _HomeState extends State<Home> {
           }, builder: (context, countdowns) {
             return ListView(
               physics: AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               children: [
                 GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisExtent: 125, crossAxisCount: 2, mainAxisSpacing: 2, crossAxisSpacing: 2),
-                  physics: const ScrollPhysics(),
+                    childAspectRatio: 1.66,
+                    crossAxisCount: 2,
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: countdowns.length,
                   itemBuilder: (context, index) {
                     Countdown countdown = countdowns[index];
+
                     return CountdownCard(
-                      key: UniqueKey(),
+                      key: ValueKey(countdown.id),
                       countdown: countdown,
                     );
                   },

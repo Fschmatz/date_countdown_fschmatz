@@ -1,5 +1,5 @@
 class AppDetails {
-  static String appVersion = "2.4.0";
+  static String appVersion = "2.4.1";
   static String appName = "Date Countdown Fschmatz";
   static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
@@ -9,6 +9,7 @@ class AppDetails {
 ${appVersion}
 - Logic Changes
 - Add AppParameters
+- UI changes
 - Bug fixes
 ''';
 

@@ -1,15 +1,9 @@
 import 'package:date_countdown_fschmatz/util/app_details.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../util/utils_functions.dart';
 
 class AppInfoPage extends StatelessWidget {
-  _launchGithub() {
-    launchUrl(
-      Uri.parse(AppDetails.repositoryLink),
-      mode: LaunchMode.externalApplication,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     Color? themeColorText = Theme.of(context).colorScheme.primary;
@@ -31,18 +25,11 @@ class AppInfoPage extends StatelessWidget {
           const SizedBox(height: 15),
           Center(
             child: Text(AppDetails.appName + " " + AppDetails.appVersion,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: themeColorText)),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: themeColorText)),
           ),
           const SizedBox(height: 15),
           ListTile(
-            title: Text("Dev",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: themeColorText)),
+            title: Text("Dev", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
@@ -51,27 +38,17 @@ class AppInfoPage extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text("Source Code",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: themeColorText)),
+            title: Text("Source Code", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
           ),
           ListTile(
             onTap: () {
-              _launchGithub();
+              UtilsFunctions.openGithubRepository();
             },
             leading: Icon(Icons.open_in_new_outlined),
-            title: Text("View on GitHub",
-                style: TextStyle(
-                    decoration: TextDecoration.underline, decorationColor: Colors.blue, color: Colors.blue)),
+            title: Text("View on GitHub", style: TextStyle(decoration: TextDecoration.underline, decorationColor: Colors.blue, color: Colors.blue)),
           ),
           ListTile(
-            title: Text("Quote",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: themeColorText)),
+            title: Text("Quote", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
           ),
           ListTile(
             leading: Icon(Icons.messenger_outline),

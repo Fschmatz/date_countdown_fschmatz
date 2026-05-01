@@ -5,16 +5,16 @@ import 'package:jiffy/jiffy.dart';
 import '../classes/countdown.dart';
 import '../service/countdown_service.dart';
 
-class StoreCountdown extends StatefulWidget {
+class StoreCountdownDialog extends StatefulWidget {
   final Countdown? countdown;
 
-  const StoreCountdown({Key? key, this.countdown}) : super(key: key);
+  const StoreCountdownDialog({Key? key, this.countdown}) : super(key: key);
 
   @override
-  State<StoreCountdown> createState() => _StoreCountdownState();
+  State<StoreCountdownDialog> createState() => _StoreCountdownDialogState();
 }
 
-class _StoreCountdownState extends State<StoreCountdown> {
+class _StoreCountdownDialogState extends State<StoreCountdownDialog> {
   late DateTime _dateSelected;
   bool _validNote = true;
   bool _validDate = true;
@@ -87,18 +87,19 @@ class _StoreCountdownState extends State<StoreCountdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? "Edit" : "New"),
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
+    return AlertDialog(
+      title: Text(isEditing ? "Edit" : "New"),
+      scrollable: true,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
               minLines: 1,
               maxLines: 3,
-              maxLength: 200,
+              maxLength: 150,
               autofocus: !isEditing,
               textCapitalization: TextCapitalization.sentences,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -110,43 +111,40 @@ class _StoreCountdownState extends State<StoreCountdown> {
                 errorText: _validNote ? null : "Note is empty",
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: TextField(
+            const SizedBox(height: 16),
+            TextField(
               readOnly: true,
               controller: _controllerDate,
+              onTap: chooseDate,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 labelText: "Date",
                 helperText: "* Required",
                 errorText: _validDate ? null : "Date is empty",
-                suffixIcon: IconButton(
-                  onPressed: chooseDate,
-                  icon: const Icon(Icons.today_outlined),
-                ),
+                suffixIcon: const Icon(Icons.today_outlined),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
-            child: FilledButton.icon(
-              onPressed: () {
-                if (_validateBeforeStore()) {
-                  _store();
-                  Navigator.of(context).pop();
-                } else {
-                  setState(() {
-                    _validNote;
-                  });
-                }
-              },
-              icon: const Icon(Icons.save_outlined),
-              label: const Text('Save'),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text("Cancel"),
+        ),
+        FilledButton.icon(
+          onPressed: () {
+            if (_validateBeforeStore()) {
+              _store();
+              Navigator.of(context).pop();
+            } else {
+              setState(() {});
+            }
+          },
+          icon: const Icon(Icons.save_outlined),
+          label: const Text('Save'),
+        ),
+      ],
     );
   }
 }
