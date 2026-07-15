@@ -1,3 +1,5 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:flutter/widgets.dart';
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 
 import '../classes/app_parameter.dart';
@@ -25,4 +27,14 @@ class AppState {
       appParameters: appParameters ?? this.appParameters,
     );
   }
+}
+
+extension BuildContextExtension on BuildContext {
+  AppState get state => getState<AppState>();
+
+  AppState read() => getRead<AppState>();
+
+  R select<R>(R Function(AppState state) selector) => getSelect<AppState, R>(selector);
+
+  R? event<R>(Evt<R> Function(AppState state) selector) => getEvent<AppState, R>(selector);
 }

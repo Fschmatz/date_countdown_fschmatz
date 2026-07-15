@@ -3,7 +3,6 @@ import 'package:jiffy/jiffy.dart';
 
 import '../classes/countdown.dart';
 import 'countdown_bottom_sheet.dart';
-import 'countdown_card_header.dart';
 
 class CountdownCard extends StatefulWidget {
   @override
@@ -24,8 +23,6 @@ class _CountdownCardState extends State<CountdownCard> {
   @override
   void initState() {
     super.initState();
-
-    _calculateDateValues();
   }
 
   void _calculateDateValues() {
@@ -71,7 +68,7 @@ class _CountdownCardState extends State<CountdownCard> {
   }
 
   Color _getTextColor(ColorScheme colorScheme) {
-    Color textColor = colorScheme.onPrimaryContainer;
+    Color textColor = colorScheme.onSurface;
 
     if (_isPast) {
       textColor = Theme.of(context).disabledColor;
@@ -84,7 +81,7 @@ class _CountdownCardState extends State<CountdownCard> {
     return textColor;
   }
 
-  Icon _getIcon(Color color) {
+  IconData _getIconData() {
     IconData iconData = Icons.hourglass_top_outlined;
 
     if (_isPast) {
@@ -95,55 +92,88 @@ class _CountdownCardState extends State<CountdownCard> {
       iconData = Icons.priority_high_outlined;
     }
 
-    return Icon(
-      iconData,
-      color: color,
-      size: 28,
-    );
+    return iconData;
   }
 
   void _showDetails() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+      showDragHandle: true,
       builder: (context) => CountdownBottomSheet(countdown: widget.countdown),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    _calculateDateValues();
     final colorScheme = Theme.of(context).colorScheme;
     final backgroundColor = _getBackgroundColor(colorScheme);
     final textColor = _getTextColor(colorScheme);
 
     return Card(
+      margin: const EdgeInsets.all(6),
       color: backgroundColor,
+      elevation: 0,
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
         onTap: _showDetails,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CountdownCardHeader(
-              countdown: widget.countdown,
-              countdownText: _generateCountdownText(),
-              textColor: textColor,
-              icon: _getIcon(textColor),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-              child: Text(
-                widget.countdown.note!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
-                ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      _generateCountdownText(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                        color: textColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    _getIconData(),
+                    color: textColor.withValues(alpha: 0.8),
+                    size: 22,
+                  ),
+                ],
               ),
-            )
-          ],
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.countdown.note!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: textColor.withValues(alpha: 0.9),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    widget.countdown.getDateFormatted(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: textColor.withValues(alpha: 0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

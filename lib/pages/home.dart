@@ -25,6 +25,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final countdowns = context.select(selectCountdowns);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(AppDetails.appNameHomePage),
@@ -55,36 +57,32 @@ class _HomeState extends State<Home> {
         body: RefreshIndicator(
           onRefresh: loadCountdowns,
           color: Theme.of(context).colorScheme.primary,
-          child: StoreConnector<AppState, List<Countdown>>(converter: (store) {
-            return selectCountdowns();
-          }, builder: (context, countdowns) {
-            return ListView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              children: [
-                GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1.66,
-                    crossAxisCount: 2,
-                  ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: countdowns.length,
-                  itemBuilder: (context, index) {
-                    Countdown countdown = countdowns[index];
-
-                    return CountdownCard(
-                      key: ValueKey(countdown.id),
-                      countdown: countdown,
-                    );
-                  },
+          child: ListView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            children: [
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 1.66,
+                  crossAxisCount: 2,
                 ),
-                const SizedBox(
-                  height: 100,
-                )
-              ],
-            );
-          }),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: countdowns.length,
+                itemBuilder: (context, index) {
+                  Countdown countdown = countdowns[index];
+
+                  return CountdownCard(
+                    key: ValueKey(countdown.id),
+                    countdown: countdown,
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 100,
+              )
+            ],
+          ),
         ));
   }
 }

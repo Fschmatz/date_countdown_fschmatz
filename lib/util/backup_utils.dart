@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:date_countdown_fschmatz/util/toast_utils.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../service/app_parameter_service.dart';
 import '../service/countdown_service.dart';
+import 'utils_functions.dart';
 
 class BackupUtils {
   Future<List<Map<String, dynamic>>> _loadAll() async {
@@ -32,31 +35,7 @@ class BackupUtils {
     await AppParameterService().insertParametersFromRestoreBackup(jsonData);
   }
 
-  Future<void> _loadStoragePermission() async {
-    var status = await Permission.manageExternalStorage.status;
-
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
-    }
-  }
-
-  // Always using Android Download folder
-  Future<String> _loadDirectory() async {
-    bool dirDownloadExists = true;
-    String directory = "/storage/emulated/0/Download/";
-
-    dirDownloadExists = await Directory(directory).exists();
-    if (dirDownloadExists) {
-      directory = "/storage/emulated/0/Download/";
-    } else {
-      directory = "/storage/emulated/0/Downloads/";
-    }
-
-    return directory;
-  }
-
-  Future<void> backupData(String fileName) async {
-    await _loadStoragePermission();
+  Future<void> backupData() async {
     await AppParameterService().saveLastBackupDate();
 
     List<Map<String, dynamic>> list = await _loadAll();
@@ -68,48 +47,46 @@ class BackupUtils {
         'parameters': listParameters,
       };
 
-      await _saveDataAsJson(combinedData, fileName);
-
-      Fluttertoast.showToast(
-        msg: "Backup completed!",
-      );
+      await _saveListAsJsonAndShare(combinedData);
     } else {
-      Fluttertoast.showToast(
-        msg: "No data found!",
+      ToastUtils.show(
+        "No data found!",
       );
     }
   }
 
-  Future<void> _saveDataAsJson(Map<String, dynamic> data, String fileName) async {
+  Future<void> _saveListAsJsonAndShare(Map<String, dynamic> data) async {
     try {
-      String directory = await _loadDirectory();
-
-      final file = File('$directory/$fileName.json');
+      final directory = await getTemporaryDirectory();
+      final newFileName = UtilsFunctions.getBackupFilename();
+      final file = File('${directory.path}/$newFileName');
 
       await file.writeAsString(json.encode(data));
+
+      await Share.shareXFiles([XFile(file.path)], text: 'Backup $newFileName');
+
+      ToastUtils.show(
+        "Backup completed!",
+      );
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error!",
+      ToastUtils.showErrorMessage(
+        "Error!",
       );
     }
   }
 
-  Future<void> restoreBackupData(String fileName) async {
-    await _loadStoragePermission();
-
+  Future<void> restoreBackupData() async {
     try {
-      String directory = await _loadDirectory();
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+      );
 
-      final file = File('$directory/$fileName.json');
-      final jsonString = await file.readAsString();
-      final dynamic decodedJson = json.decode(jsonString);
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+        final jsonString = await file.readAsString();
+        final dynamic decodedJson = json.decode(jsonString);
 
-      if (decodedJson is List) {
-        // Old Backup (Countdowns Only)
-        await _deleteAll();
-        await _insertAll(decodedJson);
-      } else if (decodedJson is Map<String, dynamic>) {
-        // New Backup (Countdowns + Parameters)
         if (decodedJson.containsKey('countdowns')) {
           await _deleteAll();
           await _insertAll(decodedJson['countdowns']);
@@ -119,14 +96,14 @@ class BackupUtils {
           await _deleteAllParameters();
           await _insertParameters(decodedJson['parameters']);
         }
-      }
 
-      Fluttertoast.showToast(
-        msg: "Success!",
-      );
+        ToastUtils.show(
+          "Success!",
+        );
+      }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error!",
+      ToastUtils.showErrorMessage(
+        "Error!",
       );
     }
   }

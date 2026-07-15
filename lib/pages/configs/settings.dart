@@ -13,7 +13,7 @@ class SettingsPage extends StatefulWidget {
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 
-  SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -27,122 +27,193 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color? themeColorText = Theme.of(context).colorScheme.primary;
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Settings"),
-        ),
-        body: ListView(
-          children: <Widget>[
-            Card(
-              margin: const EdgeInsets.fromLTRB(16, 20, 16, 25),
-              color: themeColorText,
-              child: ListTile(
-                title: Text(
-                  AppDetails.appName + " " + AppDetails.appVersion,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 17.5, color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text("General", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const DialogSelectTheme();
-                  }),
-              leading: const Icon(Icons.brightness_6_outlined),
-              title: const Text(
-                "App theme",
-              ),
-              subtitle: Text(
-                getThemeStringFormatted(),
-              ),
-            ),
-            ListTile(
-              title: Text("Backup", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
-            ),
-            ListTile(
-                leading: const Icon(Icons.print_outlined),
-                title: const Text("Print countdowns"),
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => DialogPrint(),
-                      fullscreenDialog: true,
-                    ))),
-            ListTile(
-              onTap: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DialogBackup(
-                      isCreateBackup: true,
-                    );
-                  }),
-              leading: const Icon(Icons.save_outlined),
-              title: const Text(
-                "Backup now",
-              ),
-              subtitle: const Row(
+      appBar: AppBar(title: const Text("Settings")),
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: 24),
+        children: <Widget>[
+          Card(
+            margin: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            color: Theme.of(context).colorScheme.primaryContainer,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+              child: Column(
                 children: [
-                  Text("Last backup: "),
-                  AppParameterValue(
-                    parameterKey: 'lastBackupDate',
+                  Text(
+                    AppDetails.appName,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Version ${AppDetails.appVersion}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
+                        ),
                   ),
                 ],
               ),
             ),
-            ListTile(
-              onTap: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DialogBackup(
-                      isCreateBackup: false,
-                    );
-                  }),
-              leading: const Icon(Icons.settings_backup_restore_outlined),
-              title: const Text(
-                "Restore from backup",
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                  child: Text(
+                    "General",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const DialogSelectTheme();
+                          },
+                        ),
+                        leading: const Icon(Icons.brightness_6_outlined),
+                        title: const Text("App theme"),
+                        subtitle: Text(
+                          getThemeStringFormatted(),
+                        ),
+                      ),
+                      const Divider(),
+                      ListTile(
+                          leading: const Icon(Icons.print_outlined),
+                          title: const Text("Print countdowns"),
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => DialogPrint(),
+                                fullscreenDialog: true,
+                              ))),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            ListTile(
-              title: Text("About", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: themeColorText)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                  child: Text(
+                    "Backup",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogBackup(
+                              isCreateBackup: true,
+                            );
+                          },
+                        ),
+                        leading: const Icon(Icons.save_outlined),
+                        title: const Text("Backup now"),
+                        subtitle: const Row(
+                          children: [
+                            Text("Last backup: "),
+                            AppParameterValue(parameterKey: 'lastBackupDate'),
+                          ],
+                        ),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogBackup(
+                              isCreateBackup: false,
+                            );
+                          },
+                        ),
+                        leading: const Icon(Icons.settings_backup_restore_outlined),
+                        title: const Text("Restore from backup"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(
-                Icons.info_outline,
-              ),
-              title: Text(
-                "App info",
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => AppInfoPage(),
-                    ));
-              },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                  child: Text(
+                    "About",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.info_outline),
+                        title: const Text("App info"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => const AppInfoPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const Divider(),
+                      ListTile(
+                        leading: const Icon(Icons.article_outlined),
+                        title: const Text("Changelog"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => const ChangelogPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(
-                Icons.article_outlined,
-              ),
-              title: Text(
-                "Changelog",
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ChangelogPage(),
-                    ));
-              },
-            ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }

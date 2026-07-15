@@ -96,6 +96,9 @@ class _StoreCountdownDialogState extends State<StoreCountdownDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(
+              height: 12,
+            ),
             TextField(
               minLines: 1,
               maxLines: 3,
@@ -105,7 +108,7 @@ class _StoreCountdownDialogState extends State<StoreCountdownDialog> {
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: _controllerNote,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
                 labelText: "Note",
                 helperText: "* Required",
                 errorText: _validNote ? null : "Note is empty",
@@ -117,7 +120,7 @@ class _StoreCountdownDialogState extends State<StoreCountdownDialog> {
               controller: _controllerDate,
               onTap: chooseDate,
               decoration: InputDecoration(
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
                 labelText: "Date",
                 helperText: "* Required",
                 errorText: _validDate ? null : "Date is empty",

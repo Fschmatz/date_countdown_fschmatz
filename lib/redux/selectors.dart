@@ -1,15 +1,15 @@
 import 'package:date_countdown_fschmatz/classes/countdown.dart';
 import '../classes/app_parameter.dart';
 
-import '../main.dart';
+import 'app_state.dart';
 
-List<Countdown> selectCountdowns() => store.state.countdowns;
+List<Countdown> selectCountdowns(AppState state) => state.countdowns;
 
-List<AppParameter> selectAppParameters() => store.state.appParameters;
+List<AppParameter> selectAppParameters(AppState state) => state.appParameters;
 
-String? selectParameterValueByKey(String key) {
+String? selectParameterValueByKey(AppState state, String key) {
   try {
-    return store.state.appParameters
+    return state.appParameters
         .firstWhere((element) => element.key == key)
         .value;
   } catch (e) {
@@ -17,8 +17,8 @@ String? selectParameterValueByKey(String key) {
   }
 }
 
-bool selectParameterValueByKeyAsBoolean(String key, {bool defaultValue = true}) {
-  String? value = selectParameterValueByKey(key);
+bool selectParameterValueByKeyAsBoolean(AppState state, String key, {bool defaultValue = true}) {
+  String? value = selectParameterValueByKey(state, key);
 
   if (value == null) {
     return defaultValue;

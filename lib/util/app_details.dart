@@ -1,5 +1,5 @@
 class AppDetails {
-  static String appVersion = "2.4.1";
+  static String appVersion = "2.5.0";
   static String appName = "Date Countdown Fschmatz";
   static String appNameHomePage = "Date Countdown";
   static String repositoryLink = "https://github.com/Fschmatz/date_countdown_fschmatz";
@@ -7,14 +7,19 @@ class AppDetails {
 
   static String changelogCurrent = '''
 ${appVersion}
+- New backup logic
+- UI changes
+- Flutter 3.44
+''';
+
+  static String changelogsOld = '''
+2.4.1
 - Logic Changes
 - Add AppParameters
 - UI changes
 - Bug fixes
-''';
 
-  static String changelogsOld = '''
-  2.3.1
+2.3.1
 - Async Redux
 - Update Flutter 3.32
 - Themed icon

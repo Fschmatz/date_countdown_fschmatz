@@ -19,7 +19,7 @@ class CountdownCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       dense: true,
       title: Text(
         countdownText,
